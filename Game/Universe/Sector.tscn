@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Game/Universe/SectorGenerator.cs" type="Script" id=1]
+
+[node name="Sector" type="Node2D"]
+position = Vector2( 223, 346 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}

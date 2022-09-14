@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="80"
+   height="300"
+   viewBox="0 0 80 300"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="platforms.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview4257"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="0.47748556"
+     inkscape:cx="337.18297"
+     inkscape:cy="471.21844"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer9"
+     showguides="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4263" />
+  </sodipodi:namedview>
+  <defs
+     id="defs4252" />
+  <g
+     inkscape:label="MachineGun"
+     id="layer1"
+     inkscape:groupmode="layer"
+     transform="translate(-206.58508,-119.95263)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer9"
+       inkscape:label="MachineGunBarell">
+      <rect
+         style="fill:#ffffff;stroke-width:0.947218"
+         id="rect4328"
+         width="80"
+         height="300"
+         x="206.58508"
+         y="119.95263" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,92 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+
+public class PlayerCamera2D : Camera2D
+{
+    Events _events;
+    Tween _tween;
+    RemoteTransform2D _remoteMap;
+
+    float _lastDragInstance;
+    float _zoomSensitivity = 10f;
+    float _zoomSpeed = 0.05f;
+    float _defaultZoom = 1f;
+    float _minPinchZoom = 0.5f;
+    float _maxPinchZoom = 2f;
+    float _fromGameToMapThreshold = 2f;
+    float _defaultMapZoom = 5.0f;
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        _events = GetNode<Events>("/root/Events");
+        _remoteMap = GetNode<RemoteTransform2D>("RemoteMap");
+        _tween = GetNode<Tween>("Tween");
+
+        _events.Connect("MapToggled", this, nameof(ToggleMap));
+    }
+
+    List<InputEventScreenDrag> _inputEvents = new List<InputEventScreenDrag>();
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        base._UnhandledInput(@event);
+
+        if(@event is InputEventScreenTouch touch && !touch.IsPressed())
+        {
+            _inputEvents.Clear();
+            Zoom = Vector2.One * _defaultZoom;
+        }
+
+        if(@event is InputEventScreenDrag drag)
+        {
+            _inputEvents.Insert(drag.Index, drag);
+
+            if(_inputEvents.Count == 2)
+            {
+                var dragDistance = _inputEvents[0].Position.DistanceTo(_inputEvents[1].Position);
+
+                if(Mathf.Abs(dragDistance - _lastDragInstance) > _zoomSensitivity)
+                {
+                    var newZoom = (1 + _zoomSpeed);
+                    if(dragDistance < _lastDragInstance)
+                        newZoom = (1 - _zoomSpeed);
+
+                    if(newZoom < _fromGameToMapThreshold)
+                    {
+                        newZoom = Mathf.Clamp(Zoom.x * newZoom, _minPinchZoom, _maxPinchZoom);
+
+                        Zoom = Vector2.One * newZoom;
+                        _lastDragInstance = dragDistance;
+                    }
+                    else
+                    {
+                        _events.EmitSignal("OpenMap");
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetCameraMap(MapView map)
+    {
+        var cameraMap = (PlayerCamera2D)this.Duplicate();
+        map.RegisterCamera(cameraMap);
+        _remoteMap.RemotePath = cameraMap.GetPath();
+    }
+
+    void ToggleMap(bool show, float duration)
+    {
+        if(show)
+        {
+            _tween.InterpolateProperty(this, "zoom", Zoom, Vector2.One * _maxPinchZoom, duration, Tween.TransitionType.Linear, Tween.EaseType.OutIn);
+        }
+        else
+        {
+            _tween.InterpolateProperty(this, "zoom", Zoom, Vector2.One * _defaultMapZoom, duration, Tween.TransitionType.Linear, Tween.EaseType.OutIn);
+        }
+
+        _tween.Start();
+    }
+}

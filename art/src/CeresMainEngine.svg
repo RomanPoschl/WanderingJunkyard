@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64.0px"
+   height="64.0px"
+   viewBox="0 0 64.0 64.0"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="CeresMainEngine.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview10397"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="7.6397689"
+     inkscape:cx="30.17107"
+     inkscape:cy="37.697475"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid10403" />
+  </sodipodi:namedview>
+  <defs
+     id="defs10392" />
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#6d6d6d;fill-opacity:1;stroke:#cbcbcb;stroke-width:2;stroke-opacity:1"
+       id="rect10462"
+       width="36.388535"
+       height="53.404758"
+       x="14.921917"
+       y="0.13089401"
+       ry="0" />
+    <ellipse
+       style="fill:#6d6d6d;fill-opacity:1;stroke:#cbcbcb;stroke-width:2;stroke-opacity:1"
+       id="path14012"
+       cx="33.050739"
+       cy="54.451912"
+       rx="18.259714"
+       ry="6.2829127" />
+  </g>
+</svg>

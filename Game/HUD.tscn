@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Game/Joystick/Joystick.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/HUD.cs" type="Script" id=2]
+[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 3 )
+
+[node name="HUD" type="Control"]
+script = ExtResource( 2 )
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchor_right = 1.0
+margin_bottom = 78.0
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+
+[node name="Message" type="Label" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -39.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 1 )
+align = 1
+autowrap = true
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Joystick" parent="Control" instance=ExtResource( 1 )]
+position = Vector2( 241, 607 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 0.906
+anchor_top = 0.486
+anchor_right = 1.0
+anchor_bottom = 0.514
+margin_left = 0.119995
+margin_top = 0.0799866
+margin_bottom = -0.0799866
+text = "JUMP"
+
+[node name="Popups" type="Node" parent="."]
+
+[connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
+[connection signal="gui_input" from="Control" to="." method="OnControlGuiInput"]
+[connection signal="pressed" from="Button" to="." method="OnJumpButtonPressed"]

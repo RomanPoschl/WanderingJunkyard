@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="310.71289"
+   height="187.69336"
+   viewBox="0 0 310.71289 187.69336"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="enemyScoutDrone.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="1.4804688"
+     inkscape:cx="215.13456"
+     inkscape:cy="260.72823"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer3">
+    <sodipodi:guide
+       position="411.35596,37.74154"
+       orientation="1,0"
+       id="guide9"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-100.64404,28.96053"
+       orientation="1,0"
+       id="guide61"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="155.35596,51.25077"
+       orientation="1,0"
+       id="guide63"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="208.71744,237.67821"
+       orientation="0,-1"
+       id="guide65"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="227.63037,-73.709652"
+       orientation="0,-1"
+       id="guide67"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="228.98129,-23.72548"
+       orientation="0,-1"
+       id="guide69"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-0.000236,76.91832"
+       orientation="1,0"
+       id="guide71"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="311.38762,43.82069"
+       orientation="1,0"
+       id="guide73"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="256,0"
+       end_point="256,512"
+       center_point="283.01847,245.86807"
+       id="path-effect3367"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="vertical"
+       discard_orig_path="false"
+       fuse_paths="true"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="true" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="ScoutDrone"
+     style="display:inline"
+     transform="translate(-100.64404,-150.62865)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer3"
+       inkscape:label="Main">
+      <path
+         style="fill:#ffffff;fill-opacity:1"
+         d="M 116.85547,216.14844 83.082031,334.35352 238.43945,403.8418 393.79492,334.35352 360.02148,216.14844 c 0,0 5.68776,68.25618 -24.99218,110.4375 -15.65487,21.52361 -59.78098,50.07982 -96.58985,71.55664 -36.80887,-21.47682 -80.93692,-50.03303 -96.59179,-71.55664 -30.67994,-42.18132 -24.99219,-110.4375 -24.99219,-110.4375 z"
+         id="path3365"
+         inkscape:path-effect="#path-effect3367"
+         inkscape:original-d="m 83.081795,334.35356 211.419525,94.56465 c 0,0 -124.0054,-62.94351 -152.65435,-102.33245 -30.67994,-42.18132 -24.99209,-110.438 -24.99209,-110.438 z"
+         class="UnoptimicedTransforms"
+         sodipodi:nodetypes="ccscc"
+         transform="translate(17.562005,-65.519789)" />
+    </g>
+  </g>
+</svg>

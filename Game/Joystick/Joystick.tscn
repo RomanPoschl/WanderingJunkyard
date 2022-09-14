@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Game/Joystick/JoystickButton.cs" type="Script" id=1]
+[ext_resource path="res://Game/Joystick/Textures/joystick_base_outline.png" type="Texture" id=2]
+[ext_resource path="res://Game/Joystick/Textures/joystick_tip_arrows.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 50.0
+
+[node name="Joystick" type="Sprite"]
+modulate = Color( 1, 1, 1, 0.313726 )
+texture = ExtResource( 2 )
+
+[node name="JoystickButton" type="TouchScreenButton" parent="."]
+position = Vector2( -50, -50 )
+normal = ExtResource( 3 )
+shape = SubResource( 1 )
+script = ExtResource( 1 )

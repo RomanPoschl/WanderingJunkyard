@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Game/Map/MapView.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/Universe/Sector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/HUD.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Game/Game.cs" type="Script" id=5]
+[ext_resource path="res://Game/Map/MapDisplay.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Game/UI.cs" type="Script" id=7]
+[ext_resource path="res://Game/Universe/UniverseMap.tscn" type="PackedScene" id=9]
+
+[sub_resource type="ViewportTexture" id=1]
+viewport_path = NodePath("MapView/Viewport")
+
+[node name="Game" type="Node"]
+script = ExtResource( 5 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( -1, 76 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="StartPosition" type="Position2D" parent="."]
+
+[node name="Terrain" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, 0 )
+z_index = -1
+
+[node name="MapView" parent="." instance=ExtResource( 1 )]
+anchor_right = 1.0
+margin_left = -1260.0
+margin_top = 11.0
+margin_right = -1260.0
+margin_bottom = 11.0
+
+[node name="Viewport" parent="MapView" index="0"]
+size = Vector2( 480, 720 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource( 7 )
+
+[node name="MapDisplay" parent="UI" instance=ExtResource( 6 )]
+visible = true
+margin_right = 480.0
+margin_bottom = 720.0
+texture = SubResource( 1 )
+
+[node name="HUD" parent="UI" instance=ExtResource( 3 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PopupPanel" type="Popup" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_clip_content = true
+
+[node name="Panel" type="Panel" parent="UI/PopupPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_clip_content = true
+
+[node name="UniverseMap" parent="UI/PopupPanel/Panel" instance=ExtResource( 9 )]
+position = Vector2( 177, 326 )
+
+[node name="CloseButton" type="Button" parent="UI/PopupPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -35.0
+margin_top = 15.0
+margin_right = -15.0
+margin_bottom = 35.0
+text = "X"
+
+[node name="Sector" parent="." instance=ExtResource( 2 )]
+
+[connection signal="pressed" from="UI/PopupPanel/CloseButton" to="." method="OnCloseButtonPressed"]
+
+[editable path="Player"]
+[editable path="MapView"]
