@@ -72,6 +72,8 @@ text = "X"
 
 [node name="Sector" parent="." instance=ExtResource( 2 )]
 
+[node name="Node" type="Node" parent="."]
+
 [connection signal="pressed" from="UI/PopupPanel/CloseButton" to="." method="OnCloseButtonPressed"]
 
 [editable path="Player"]
