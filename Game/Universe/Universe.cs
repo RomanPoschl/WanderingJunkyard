@@ -33,7 +33,6 @@ public class Universe : Node
         var currentPositionInUniverse = NewPlayerPosition();
 
         _currentMapCell = GetCurrentSector(currentPositionInUniverse);
-        AddChild(_currentMapCell);
         _mapCellGrid.Add(_currentMapCell);
 
         while(_mapCellGrid.Count < 33)
@@ -297,6 +296,11 @@ public class Point
     public Vector2 ToVector2()
     {
         return new Vector2((float)x, (float)y);
+    }
+
+    internal static Point FromVector2(Vector2 v)
+    {
+        return new Point(v.x, v.y);
     }
 }
 

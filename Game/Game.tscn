@@ -57,6 +57,7 @@ rect_clip_content = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_clip_content = true
+mouse_filter = 1
 
 [node name="UniverseMap" parent="UI/PopupPanel/Panel" instance=ExtResource( 9 )]
 position = Vector2( 177, 326 )
@@ -72,8 +73,7 @@ text = "X"
 
 [node name="Sector" parent="." instance=ExtResource( 2 )]
 
-[node name="Node" type="Node" parent="."]
-
+[connection signal="gui_input" from="UI/PopupPanel/Panel" to="UI/PopupPanel/Panel/UniverseMap" method="OnPanelGuiInput"]
 [connection signal="pressed" from="UI/PopupPanel/CloseButton" to="." method="OnCloseButtonPressed"]
 
 [editable path="Player"]

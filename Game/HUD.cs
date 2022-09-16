@@ -4,10 +4,13 @@ using System;
 public class HUD : Control
 {
     Sprite _joystick;
+    Vector2 _joystickDefaultPosition;
+
     public override void _Ready()
     {
         base._Ready();
         _joystick = GetNode<Sprite>("Control/Joystick");
+        _joystickDefaultPosition = _joystick.Position;
     }
 
     public void ShowMessage(string text)
@@ -44,12 +47,20 @@ public class HUD : Control
         GetNode<Label>("Message").Hide();
     }
 
+
     void OnControlGuiInput(InputEvent @event)
     {
-        if (@event is InputEventScreenTouch touch && @event.IsPressed())
+        if (@event is InputEventScreenTouch touch)
         {
-            _joystick.Position = touch.Position;
-            _joystick.Show();
+            if(@event.IsPressed())
+            {
+                _joystick.Position = touch.Position;
+                _joystick.Show();
+            }
+            else
+            {
+                _joystick.Position = _joystickDefaultPosition;
+            }
         }
     }
 

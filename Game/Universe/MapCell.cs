@@ -20,12 +20,7 @@ public class MapCell : Area2D
         _poly = GetNode<Polygon2D>("Polygon2D");
         _collisionPoly = GetNode<CollisionPolygon2D>("CollisionPolygon2D");
 
-        Position = MoveToPlayer(OffsetCoordFromHex.ToVector2());
-    }
-
-    public Vector2 MoveToPlayer(Vector2 v)
-    {
-        return v - new Vector2(-196, -66);
+        Position = OffsetCoordFromHex.ToVector2();
     }
 
     public override bool Equals(object obj)
@@ -39,7 +34,7 @@ public class MapCell : Area2D
     internal void InitShape()
     {
         var cs = _layout.PolygonCorners(HexPosition);
-        SetShape(cs.Select(x => new Vector2((float)x.x, (float)x.y)).ToArray());
+        SetShape(cs.Select(x => new Vector2(-(float)x.x, -(float)x.y)).ToArray());
     }
 
     public void SetShape(Vector2[] shape)
@@ -48,12 +43,23 @@ public class MapCell : Area2D
             return;
         
         _poly.Polygon = shape;
-        var color = Colors.AliceBlue;
-        color.a = .2f;
-        _poly.Color = color;
+        ResetColor();
 
         _collisionPoly.Polygon = shape;
 
         _shape = shape;
+    }
+
+    internal void SetColor(Color color)
+    {
+        color.a = .2f;
+        _poly.Color = color;
+    }
+
+    internal void ResetColor()
+    {
+        var color = Colors.AliceBlue;
+        color.a = .2f;
+        _poly.Color = color;
     }
 }
