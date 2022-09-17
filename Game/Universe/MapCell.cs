@@ -62,4 +62,9 @@ public class MapCell : Area2D
         color.a = .2f;
         _poly.Color = color;
     }
+
+    void OnMapCellInputEvent(Node viewPort, InputEvent @event, int shapeId)
+    {
+
+    }
 }

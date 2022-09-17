@@ -75,6 +75,15 @@ public class SectorGenerator : Node2D
     Universe _universe;
     private Player _player;
 
+    float _sectorSeed;
+
+    void OnUniverseMapJumpToSector(MapCell mapCell)
+    {
+        _sectorSeed = mapCell.NoiseSeed;
+        _sectors.Clear();
+        Generate();
+    }
+
     public override void _Ready()
     {
         base._Ready();
@@ -84,7 +93,6 @@ public class SectorGenerator : Node2D
         _halfSectorCount = (int)(sectorAxisCount / 2.0);
 
         _player = GetNode<Player>("/root/Game/Player");
-
         _universe = GetNode<Universe>("/root/Universe");
 
         Generate();
@@ -177,8 +185,6 @@ public class SectorGenerator : Node2D
                     var end = travelLine.Destination;
 
                     DrawLine(start, end, Color.ColorN("cornflower"), 6f);
-                    
-                    //DrawCircle(moon.Position, PLANET_BASE_SIZE * moon.Scale, Color.ColorN("aquamarine"));
                 }
             }
 
@@ -195,7 +201,7 @@ public class SectorGenerator : Node2D
 
     uint MakeSeedFor(float _x_id,float _y_id,string custom_data = "")
     {
-        var newSeed = $"{startSeed}_{_x_id}_{_y_id}"; //%s_%s_%s" % [startSeed, _x_id, _y_id];
+        var newSeed = $"{_sectorSeed}_{startSeed}_{_x_id}_{_y_id}"; //%s_%s_%s" % [startSeed, _x_id, _y_id];
         if (!string.IsNullOrEmpty(custom_data)){
             newSeed = $"{newSeed}_{custom_data}";//"%s_%s" % [newSeed, custom_data];
         }

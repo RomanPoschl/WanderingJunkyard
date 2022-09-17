@@ -24,19 +24,24 @@ public class Sector
 
     public SectorType GetSectorType()
     {
-        if (NoiseSeed > 0 && NoiseSeed < .2f)
+        return GetSectorType(NoiseSeed);
+    }
+
+    public static SectorType GetSectorType(float noiseSeed)
+    {
+        if (noiseSeed > 0 && noiseSeed < .2f)
             return SectorType.SingleStar;
         
-        if (NoiseSeed == 0)
+        if (noiseSeed == 0)
             return SectorType.BlackHole;
         
-        if (NoiseSeed< 0 && NoiseSeed>= -.2f)
+        if (noiseSeed< 0 && noiseSeed>= -.2f)
             return SectorType.BinaryStar;
 
-        if (NoiseSeed< .2f && NoiseSeed>= -.4f)
+        if (noiseSeed< .2f && noiseSeed>= -.4f)
             return SectorType.TriStar;
 
-        if (NoiseSeed< .4f && NoiseSeed>= -.6f)
+        if (noiseSeed< .4f && noiseSeed>= -.6f)
             return SectorType.Cloud;
         
         return SectorType.Void;

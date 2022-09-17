@@ -5,6 +5,9 @@ using System.Linq;
 
 public class UniverseMap : Node2D
 {
+    [Signal]
+    public delegate void JumpToSector(MapCell mapCell);
+
     Layout _layout = new Layout(Layout.flat, new Point(50, 50), new Point(0, 0));
     Universe _universe;
     PackedScene _preloadedCell;
@@ -80,6 +83,7 @@ public class UniverseMap : Node2D
                     _currentlySelected?.ResetColor();
                     polyObject.SetColor(Colors.Orange);
                     _currentlySelected = polyObject;
+                    ShowSectorInfo(touch.Position);
                 }
             }
         }
@@ -91,6 +95,36 @@ public class UniverseMap : Node2D
         }
     }
 
+    void ShowSectorInfo(Vector2 mousePosition)
+    {
+        if(_currentlySelected == null)
+            return;
+        
+        var sectorPopupPanel = GetNode<PopupPanel>("/root/Game/UI/PopupPanel/Panel/SectorPopupPanel");
+        var titleLabel = GetNode<Label>("/root/Game/UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/SectorName");
+        var sectorTypeLabel = GetNode<Label>("/root/Game/UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/HBoxContainer/Type");
+
+        titleLabel.Text = $"{_currentlySelected.HexPosition.Q}_{_currentlySelected.HexPosition.R}_{_currentlySelected.HexPosition.S}";
+        sectorTypeLabel.Text = Sector.GetSectorType(_currentlySelected.NoiseSeed).ToString();
+        sectorPopupPanel.RectPosition = mousePosition;
+        sectorPopupPanel.Popup_();
+    }
+
+    void OnJumpButtonPressed()
+    {
+        GD.Print("Jump NOW");
+        var sectorPopupPanel = GetNode<PopupPanel>("/root/Game/UI/PopupPanel/Panel/SectorPopupPanel");
+        var mapPopup = GetNode<Popup>("/root/Game/UI/PopupPanel");
+        sectorPopupPanel.Hide();
+        mapPopup.Hide();
+        EmitSignal(nameof(JumpToSector), _currentlySelected);
+    }
+
+    void OnSectorPopupCloseButtonPressed()
+    {
+        var sectorPopupPanel = GetNode<PopupPanel>("/root/Game/UI/PopupPanel/Panel/SectorPopupPanel");
+        sectorPopupPanel.Hide();
+    }
 
     public override void _Process(float delta)
     {
