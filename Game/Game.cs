@@ -5,7 +5,6 @@ public class Game : Node
 {
     MapView _mapView;
     Universe _universe;
-    SectorGenerator _sectorGenerator;
 
     Popup _mapPopup;
     Button _mapCloseButton;
@@ -18,7 +17,6 @@ public class Game : Node
         _universe = GetNode<Universe>("/root/Universe");
 
         _mapView = GetNode<MapView>("MapView");
-        _sectorGenerator = GetNode<SectorGenerator>("Terrain");
 
         _mapPopup = GetNode<Popup>("UI/PopupPanel");
         _mapCloseButton = GetNode<Button>("UI/PopupPanel/CloseButton");
