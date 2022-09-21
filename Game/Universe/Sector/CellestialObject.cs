@@ -49,5 +49,6 @@ public class CellestialObject : RigidBody2D
     public void UpdatePosition(float timeStep)
     {
         Position += _currentVelocity * timeStep;
+        //MoveAndCollide(_currentVelocity * timeStep);
     }
 }

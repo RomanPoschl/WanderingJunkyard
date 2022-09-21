@@ -40,18 +40,29 @@ anchor_bottom = 1.0
 position = Vector2( 241, 607 )
 scale = Vector2( 0.5, 0.5 )
 
-[node name="Button" type="Button" parent="."]
-anchor_left = 0.906
-anchor_top = 0.486
+[node name="Popups" type="Node" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.514
-margin_left = 0.119995
-margin_top = 0.0799866
-margin_bottom = -0.0799866
+anchor_bottom = 0.5
+margin_left = -45.0
+margin_top = -22.0
+margin_bottom = 22.0
+
+[node name="JumpButton" type="Button" parent="VBoxContainer"]
+margin_right = 45.0
+margin_bottom = 20.0
 text = "JUMP"
 
-[node name="Popups" type="Node" parent="."]
+[node name="BuildButton" type="Button" parent="VBoxContainer"]
+margin_top = 24.0
+margin_right = 45.0
+margin_bottom = 44.0
+text = "Build"
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="gui_input" from="Control" to="." method="OnControlGuiInput"]
-[connection signal="pressed" from="Button" to="." method="OnJumpButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/JumpButton" to="." method="OnJumpButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/BuildButton" to="." method="OnBuildButtonPressed"]

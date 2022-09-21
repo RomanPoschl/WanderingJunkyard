@@ -7,8 +7,6 @@
 radius = 17.0294
 
 [node name="CellestialObject" type="RigidBody2D"]
-mode = 1
-gravity_scale = 0.0
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

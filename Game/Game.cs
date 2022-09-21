@@ -7,6 +7,7 @@ public class Game : Node
     Universe _universe;
 
     Popup _mapPopup;
+    PopupPanel _buildPopup;
     Button _mapCloseButton;
     UniverseMap _universeMap;
 
@@ -14,11 +15,13 @@ public class Game : Node
     {
         var events = GetNode<Events>("/root/Events");
         events.Connect(nameof(Events.OnJumpPressedSignal), this, nameof(OnJumpPressed));
+        events.Connect(nameof(Events.OnBuildPressedSignal), this, nameof(OnBuildPressed));
         _universe = GetNode<Universe>("/root/Universe");
 
         _mapView = GetNode<MapView>("MapView");
 
         _mapPopup = GetNode<Popup>("UI/PopupPanel");
+        _buildPopup = GetNode<PopupPanel>("UI/BuildMenu");
         _mapCloseButton = GetNode<Button>("UI/PopupPanel/CloseButton");
         _universeMap = GetNode<UniverseMap>("UI/PopupPanel/Panel/UniverseMap");
 
@@ -55,9 +58,20 @@ public class Game : Node
         _mapPopup.Popup_();
     }
 
+    private void OnBuildPressed()
+    {
+        //TODO Show universe map
+        GD.Print("BUILD");
+        _buildPopup.Popup_();
+    }
+
     void OnCloseButtonPressed()
     {
         _mapPopup.Hide();
     }
 
+    void BuildMenu_OnCloseButtonPressed()
+    {
+        _buildPopup.Hide();
+    }
 }

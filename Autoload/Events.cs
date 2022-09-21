@@ -10,4 +10,6 @@ public class Events : Node
 
     [Signal]
     public delegate void OnJumpPressedSignal();
+    [Signal]
+    public delegate void OnBuildPressedSignal();
 }

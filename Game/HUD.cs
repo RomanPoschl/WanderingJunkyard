@@ -69,6 +69,12 @@ public class HUD : Control
         var events = GetNode<Events>("/root/Events");
         events.EmitSignal(nameof(Events.OnJumpPressedSignal));
     }
+
+    void OnBuildButtonPressed()
+    {
+        var events = GetNode<Events>("/root/Events");
+        events.EmitSignal(nameof(Events.OnBuildPressedSignal));
+    }
 }
 
 

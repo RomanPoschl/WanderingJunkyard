@@ -19,6 +19,9 @@ script = ExtResource( 5 )
 position = Vector2( -1, 76 )
 scale = Vector2( 0.5, 0.5 )
 
+[node name="PlayerCamera2D" parent="Player" index="2"]
+zoom = Vector2( 4, 4 )
+
 [node name="StartPosition" type="Position2D" parent="."]
 position = Vector2( -178, 211 )
 
@@ -46,7 +49,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="PopupPanel" type="Popup" parent="UI"]
-visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_clip_content = true
@@ -120,6 +122,32 @@ margin_right = -15.0
 margin_bottom = 35.0
 text = "X"
 
+[node name="BuildMenu" type="PopupPanel" parent="UI"]
+visible = true
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -100.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Button" type="Button" parent="UI/BuildMenu/VBoxContainer"]
+margin_left = 460.0
+margin_right = 480.0
+margin_bottom = 20.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "X"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/BuildMenu/VBoxContainer"]
+margin_top = 24.0
+margin_right = 480.0
+margin_bottom = 24.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/BuildMenu/VBoxContainer/ScrollContainer"]
+
 [node name="Sector" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, 0 )
 
@@ -128,6 +156,7 @@ position = Vector2( 0, 0 )
 [connection signal="pressed" from="UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/CloseButton" to="UI/PopupPanel/Panel/UniverseMap" method="OnSectorPopupCloseButtonPressed"]
 [connection signal="pressed" from="UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/JumpButton" to="UI/PopupPanel/Panel/UniverseMap" method="OnJumpButtonPressed"]
 [connection signal="pressed" from="UI/PopupPanel/CloseButton" to="." method="OnCloseButtonPressed"]
+[connection signal="pressed" from="UI/BuildMenu/VBoxContainer/Button" to="." method="BuildMenu_OnCloseButtonPressed"]
 
 [editable path="Player"]
 [editable path="MapView"]
