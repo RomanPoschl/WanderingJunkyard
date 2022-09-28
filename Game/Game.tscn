@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Game/Map/MapView.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/Universe/Sector.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Game/Map/MapDisplay.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Game/UI.cs" type="Script" id=7]
 [ext_resource path="res://Game/Universe/UniverseMap.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Game/BuildMenu.cs" type="Script" id=11]
 
 [sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("MapView/Viewport")
@@ -18,9 +19,6 @@ script = ExtResource( 5 )
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( -1, 76 )
 scale = Vector2( 0.5, 0.5 )
-
-[node name="PlayerCamera2D" parent="Player" index="2"]
-zoom = Vector2( 4, 4 )
 
 [node name="StartPosition" type="Position2D" parent="."]
 position = Vector2( -178, 211 )
@@ -124,18 +122,23 @@ text = "X"
 
 [node name="BuildMenu" type="PopupPanel" parent="UI"]
 visible = true
-anchor_top = 1.0
+anchor_top = 0.861
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -100.0
+margin_top = 0.0799561
+script = ExtResource( 11 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/BuildMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 
 [node name="Button" type="Button" parent="UI/BuildMenu/VBoxContainer"]
-margin_left = 460.0
-margin_right = 480.0
+margin_left = 452.0
+margin_right = 472.0
 margin_bottom = 20.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -143,10 +146,15 @@ text = "X"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="UI/BuildMenu/VBoxContainer"]
 margin_top = 24.0
-margin_right = 480.0
-margin_bottom = 24.0
+margin_right = 472.0
+margin_bottom = 92.0
+size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/BuildMenu/VBoxContainer/ScrollContainer"]
+margin_right = 472.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Sector" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, 0 )
@@ -156,7 +164,7 @@ position = Vector2( 0, 0 )
 [connection signal="pressed" from="UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/CloseButton" to="UI/PopupPanel/Panel/UniverseMap" method="OnSectorPopupCloseButtonPressed"]
 [connection signal="pressed" from="UI/PopupPanel/Panel/SectorPopupPanel/VBoxContainer/JumpButton" to="UI/PopupPanel/Panel/UniverseMap" method="OnJumpButtonPressed"]
 [connection signal="pressed" from="UI/PopupPanel/CloseButton" to="." method="OnCloseButtonPressed"]
-[connection signal="pressed" from="UI/BuildMenu/VBoxContainer/Button" to="." method="BuildMenu_OnCloseButtonPressed"]
+[connection signal="pressed" from="UI/BuildMenu/VBoxContainer/Button" to="UI/BuildMenu" method="OnBuildClosePressed"]
 
 [editable path="Player"]
 [editable path="MapView"]

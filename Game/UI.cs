@@ -10,17 +10,17 @@ public class UI : CanvasLayer
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _map = GetNode<MapDisplay>("MapDisplay");
-        _events = GetNode<Events>("/root/Events");
+        _map = GetNode<MapDisplay>(Constants.UIConstants.MapDisplay);
+        _events = GetNode<Events>(Constants.Events);
 
-        _events.Connect("OpenMap", this, nameof(ToggleMap));
+        _events.Connect(nameof(Events.OpenMap), this, nameof(ToggleMap));
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
         base._UnhandledInput(@event);
 
-        if(@event.IsActionPressed("OpenMap") && !_map.IsAnimating)
+        if(@event.IsActionPressed(nameof(Events.OpenMap)) && !_map.IsAnimating)
         {
             _map.Toggle();
         }

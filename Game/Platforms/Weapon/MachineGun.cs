@@ -8,6 +8,11 @@ public class MachineGun : WeaponBase
     public override float RateOfFire => .25f;
     float lastShot = 0;
 
+    public override ComponentAffect ComponentAffect => new ComponentAffect()
+    {
+        Weight = 100
+    };
+
     public override bool CanShoot()
     {
         var time = Time.GetTicksMsec() / 1000f;

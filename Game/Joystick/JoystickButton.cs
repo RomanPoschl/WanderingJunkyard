@@ -32,35 +32,35 @@ public class JoystickButton : TouchScreenButton
             var posNorm = pos.Normalized();
             if(pos.x > 0)
             {
-                Input.ActionPress("move_right", posNorm.x);
+                Input.ActionPress(Constants.MovementConstants.MoveRight, posNorm.x);
             }
             else
-                Input.ActionPress("move_right", 0);
+                Input.ActionPress(Constants.MovementConstants.MoveRight, 0);
 
 
             if(pos.x < 0)
-                Input.ActionPress("move_left", posNorm.x * -1);
+                Input.ActionPress(Constants.MovementConstants.MoveLeft, posNorm.x * -1);
             else
-                Input.ActionPress("move_left", 0);
+                Input.ActionPress(Constants.MovementConstants.MoveLeft, 0);
 
 
             if(pos.y > 0)
-                Input.ActionPress("move_down", posNorm.y);
+                Input.ActionPress(Constants.MovementConstants.MoveDown, posNorm.y);
             else
-                Input.ActionPress("move_down", 0);
+                Input.ActionPress(Constants.MovementConstants.MoveDown, 0);
 
 
             if(pos.y < 0)
-                Input.ActionPress("move_up", posNorm.y * -1);
+                Input.ActionPress(Constants.MovementConstants.MoveUp, posNorm.y * -1);
             else
-                Input.ActionPress("move_up", 0);
+                Input.ActionPress(Constants.MovementConstants.MoveUp, 0);
         }
         else
         {
-            Input.ActionPress("move_right", 0);
-            Input.ActionPress("move_left", 0);
-            Input.ActionPress("move_up", 0);
-            Input.ActionPress("move_down", 0);
+            Input.ActionPress(Constants.MovementConstants.MoveRight, 0);
+            Input.ActionPress(Constants.MovementConstants.MoveLeft, 0);
+            Input.ActionPress(Constants.MovementConstants.MoveUp, 0);
+            Input.ActionPress(Constants.MovementConstants.MoveDown, 0);
         }
     }
 

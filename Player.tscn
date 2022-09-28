@@ -7,34 +7,41 @@
 [ext_resource path="res://Player.cs" type="Script" id=5]
 [ext_resource path="res://PlayerCamera2D.cs" type="Script" id=6]
 
-[sub_resource type="Gradient" id=3]
-offsets = PoolRealArray( 0.519337, 0.98895 )
-colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 0 )
-
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 128.0
 height = 30.0
 
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0.519337, 0.98895 )
+colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 0 )
+
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 10, 4 )
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="RigidBody2D"]
+gravity_scale = 0.0
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Ceres" type="Sprite" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 13 )
+shape = SubResource( 2 )
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Ceres" type="Sprite" parent="Node2D"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
-[node name="EngineLeft" type="Sprite" parent="Ceres"]
+[node name="EngineLeft" type="Sprite" parent="Node2D/Ceres"]
 position = Vector2( -96, 254 )
 z_index = -1
 texture = ExtResource( 1 )
 script = ExtResource( 4 )
 
-[node name="Particles2D" type="CPUParticles2D" parent="Ceres/EngineLeft"]
+[node name="Particles2D" type="CPUParticles2D" parent="Node2D/Ceres/EngineLeft"]
 position = Vector2( 2, 34 )
 rotation = 1.5708
 amount = 100
@@ -52,13 +59,13 @@ scale_amount = 3.0
 color = Color( 0.521569, 0.843137, 1, 1 )
 color_ramp = SubResource( 3 )
 
-[node name="EngineRight" type="Sprite" parent="Ceres"]
+[node name="EngineRight" type="Sprite" parent="Node2D/Ceres"]
 position = Vector2( 88, 258 )
 z_index = -1
 texture = ExtResource( 1 )
 script = ExtResource( 4 )
 
-[node name="Particles2D" type="CPUParticles2D" parent="Ceres/EngineRight"]
+[node name="Particles2D" type="CPUParticles2D" parent="Node2D/Ceres/EngineRight"]
 position = Vector2( 2, 34 )
 rotation = 1.5708
 amount = 100
@@ -76,70 +83,63 @@ scale_amount = 3.0
 color = Color( 0.521569, 0.843137, 1, 1 )
 color_ramp = SubResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 13 )
-shape = SubResource( 2 )
-
-[node name="PlayerCamera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera2D" type="Camera2D" parent="Node2D"]
 current = true
 zoom = Vector2( 2, 2 )
 script = ExtResource( 6 )
 
-[node name="RemoteMap" type="RemoteTransform2D" parent="PlayerCamera2D"]
+[node name="RemoteMap" type="RemoteTransform2D" parent="Node2D/PlayerCamera2D"]
 
-[node name="Tween" type="Tween" parent="PlayerCamera2D"]
+[node name="Tween" type="Tween" parent="Node2D/PlayerCamera2D"]
 
-[node name="SnapPoints" type="Node2D" parent="."]
+[node name="SnapPoints" type="Node2D" parent="Node2D"]
 
-[node name="SnapPoint" type="Position2D" parent="SnapPoints"]
+[node name="SnapPoint" type="Position2D" parent="Node2D/SnapPoints"]
 position = Vector2( -129, 0 )
 rotation = 1.5708
 
-[node name="StaticBody2D" type="StaticBody2D" parent="SnapPoints/SnapPoint"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/SnapPoints/SnapPoint"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SnapPoints/SnapPoint/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/SnapPoints/SnapPoint/StaticBody2D"]
 shape = SubResource( 4 )
 
-[node name="RayCast2D" type="RayCast2D" parent="SnapPoints/SnapPoint/StaticBody2D"]
+[node name="RayCast2D" type="RayCast2D" parent="Node2D/SnapPoints/SnapPoint/StaticBody2D"]
 cast_to = Vector2( 0, 20 )
 collision_mask = 2
 script = ExtResource( 3 )
 
-[node name="SnapPoint2" type="Position2D" parent="SnapPoints"]
+[node name="SnapPoint2" type="Position2D" parent="Node2D/SnapPoints"]
 position = Vector2( 129, 0 )
 rotation = -1.5708
 
-[node name="StaticBody2D" type="StaticBody2D" parent="SnapPoints/SnapPoint2"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/SnapPoints/SnapPoint2"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SnapPoints/SnapPoint2/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/SnapPoints/SnapPoint2/StaticBody2D"]
 shape = SubResource( 4 )
 
-[node name="RayCast2D" type="RayCast2D" parent="SnapPoints/SnapPoint2/StaticBody2D"]
+[node name="RayCast2D" type="RayCast2D" parent="Node2D/SnapPoints/SnapPoint2/StaticBody2D"]
 cast_to = Vector2( 0, 20 )
 collision_mask = 2
 script = ExtResource( 3 )
 
-[node name="SnapPoint3" type="Position2D" parent="SnapPoints"]
+[node name="SnapPoint3" type="Position2D" parent="Node2D/SnapPoints"]
 position = Vector2( 0, -131 )
 rotation = 3.14159
 
-[node name="StaticBody2D" type="StaticBody2D" parent="SnapPoints/SnapPoint3"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/SnapPoints/SnapPoint3"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SnapPoints/SnapPoint3/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/SnapPoints/SnapPoint3/StaticBody2D"]
 shape = SubResource( 4 )
 
-[node name="RayCast2D" type="RayCast2D" parent="SnapPoints/SnapPoint3/StaticBody2D"]
+[node name="RayCast2D" type="RayCast2D" parent="Node2D/SnapPoints/SnapPoint3/StaticBody2D"]
 cast_to = Vector2( 0, 20 )
 collision_mask = 2
 script = ExtResource( 3 )
 
-[node name="Platforms" type="Node2D" parent="."]
-
-[connection signal="EnginesOn" from="." to="Ceres/EngineLeft" method="OnPlayerEnginesOn"]
-[connection signal="EnginesOn" from="." to="Ceres/EngineRight" method="OnPlayerEnginesOn"]
+[node name="Components" type="Node2D" parent="Node2D"]

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class Game : Node
 {
@@ -7,23 +8,20 @@ public class Game : Node
     Universe _universe;
 
     Popup _mapPopup;
-    PopupPanel _buildPopup;
     Button _mapCloseButton;
     UniverseMap _universeMap;
 
     public override void _Ready()
     {
-        var events = GetNode<Events>("/root/Events");
+        var events = GetNode<Events>(Constants.Events);
         events.Connect(nameof(Events.OnJumpPressedSignal), this, nameof(OnJumpPressed));
-        events.Connect(nameof(Events.OnBuildPressedSignal), this, nameof(OnBuildPressed));
-        _universe = GetNode<Universe>("/root/Universe");
+        _universe = GetNode<Universe>(Constants.Universe);
 
-        _mapView = GetNode<MapView>("MapView");
+        _mapView = GetNode<MapView>(Constants.MapView);
 
-        _mapPopup = GetNode<Popup>("UI/PopupPanel");
-        _buildPopup = GetNode<PopupPanel>("UI/BuildMenu");
-        _mapCloseButton = GetNode<Button>("UI/PopupPanel/CloseButton");
-        _universeMap = GetNode<UniverseMap>("UI/PopupPanel/Panel/UniverseMap");
+        _mapPopup = GetNode<Popup>(Constants.UIConstants.UniverseMapPopUp);
+        _mapCloseButton = GetNode<Button>(Constants.UIConstants.UniveseMapClose);
+        _universeMap = GetNode<UniverseMap>(Constants.UIConstants.UniveseMap);
 
         GD.Randomize();
         NewGame();
@@ -58,20 +56,8 @@ public class Game : Node
         _mapPopup.Popup_();
     }
 
-    private void OnBuildPressed()
-    {
-        //TODO Show universe map
-        GD.Print("BUILD");
-        _buildPopup.Popup_();
-    }
-
     void OnCloseButtonPressed()
     {
         _mapPopup.Hide();
-    }
-
-    void BuildMenu_OnCloseButtonPressed()
-    {
-        _buildPopup.Hide();
     }
 }

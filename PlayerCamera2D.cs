@@ -11,9 +11,9 @@ public class PlayerCamera2D : Camera2D
     float _lastDragInstance;
     float _zoomSensitivity = 10f;
     float _zoomSpeed = 0.05f;
-    float _defaultZoom = 1f;
+    float _defaultZoom = 5f;
     float _minPinchZoom = 0.5f;
-    float _maxPinchZoom = 2f;
+    float _maxPinchZoom = 5f;
     float _fromGameToMapThreshold = 2f;
     float _defaultMapZoom = 5.0f;
 
@@ -25,6 +25,8 @@ public class PlayerCamera2D : Camera2D
         _tween = GetNode<Tween>("Tween");
 
         _events.Connect("MapToggled", this, nameof(ToggleMap));
+
+        Zoom = Vector2.One * _defaultZoom;
     }
 
     List<InputEventScreenDrag> _inputEvents = new List<InputEventScreenDrag>();
