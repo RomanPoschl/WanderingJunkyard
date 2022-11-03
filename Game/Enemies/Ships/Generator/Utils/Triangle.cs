@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public class Triangle
+public partial class Triangle
 {
     public Vector2 A { get; set; }
     public Vector2 B { get; set; }

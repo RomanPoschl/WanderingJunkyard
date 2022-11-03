@@ -1,65 +1,64 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bkny5dnyqe0uj"]
 
-[ext_resource path="res://Game/Joystick/Joystick.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Game/HUD.cs" type="Script" id=2]
-[ext_resource path="res://fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=3]
-
-[sub_resource type="DynamicFont" id=1]
-size = 64
-font_data = ExtResource( 3 )
+[ext_resource type="PackedScene" uid="uid://bbk8ovmufh6it" path="res://Game/Joystick/Joystick.tscn" id="1"]
+[ext_resource type="Script" path="res://Game/HUD.cs" id="2"]
 
 [node name="HUD" type="Control"]
-script = ExtResource( 2 )
-
-[node name="ScoreLabel" type="Label" parent="."]
-anchor_right = 1.0
-margin_bottom = 78.0
-custom_fonts/font = SubResource( 1 )
-text = "0"
-align = 1
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2")
 
 [node name="Message" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = -39.0
-margin_bottom = 39.0
-custom_fonts/font = SubResource( 1 )
-align = 1
-autowrap = true
+offset_top = -39.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MessageTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 
 [node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Joystick" parent="Control" instance=ExtResource( 1 )]
-position = Vector2( 241, 607 )
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Popups" type="Node" parent="."]
+[node name="Joystick" parent="Control" instance=ExtResource("1")]
+position = Vector2(241, 607)
+scale = Vector2(0.5, 0.5)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -45.0
-margin_top = -22.0
-margin_bottom = 22.0
+offset_left = -45.0
+offset_top = -22.0
+offset_bottom = 22.0
+grow_horizontal = 0
+grow_vertical = 2
 
 [node name="JumpButton" type="Button" parent="VBoxContainer"]
-margin_right = 45.0
-margin_bottom = 20.0
+layout_mode = 2
+offset_right = 50.0
+offset_bottom = 31.0
 text = "JUMP"
 
 [node name="BuildButton" type="Button" parent="VBoxContainer"]
-margin_top = 24.0
-margin_right = 45.0
-margin_bottom = 44.0
+layout_mode = 2
+offset_top = 35.0
+offset_right = 50.0
+offset_bottom = 66.0
 text = "Build"
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]

@@ -1,4 +1,4 @@
-public class Star : CellestialObject
+public partial class Star : CellestialObject
 {
     float _temperature;
 

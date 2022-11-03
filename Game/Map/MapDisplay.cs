@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class MapDisplay : TextureRect
+public partial class MapDisplay : TextureRect
 {
     AnimationPlayer _ap;
     Events _events;

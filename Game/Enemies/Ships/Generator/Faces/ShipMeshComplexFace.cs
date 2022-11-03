@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Godot;
 
-public class ShipMeshComplexFace : ShipMeshFace
+public partial class ShipMeshComplexFace : ShipMeshFace
 {
     private int[] triangles;
 
@@ -35,7 +35,7 @@ public class ShipMeshComplexFace : ShipMeshFace
 
         public override ShipMeshVertex RightTop { get { throw new System.NotImplementedException(); } }
 
-        public override float Area()
+        public override float Area3D()
         {
             throw new System.NotImplementedException();
         }

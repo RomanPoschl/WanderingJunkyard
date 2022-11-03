@@ -43,5 +43,5 @@ public abstract class ShipMeshFace
 
         public abstract ShipMeshFace[] Subdivide(int numberOfCuts);
 
-        public abstract float Area();
+        public abstract float Area3D();
 }

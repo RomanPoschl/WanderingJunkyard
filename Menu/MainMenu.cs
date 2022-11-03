@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing.Text;
 
-public class MainMenu : Control
+public partial class MainMenu : Control
 {
     
     SceneChanger _sceneChanger;
@@ -13,12 +13,12 @@ public class MainMenu : Control
         _sceneChanger = GetNode<SceneChanger>("/root/SceneChanger");
 
         #if DEBUG
-        _sceneChanger.ChangeScene("res://Game/Game.tscn");
+        _sceneChanger.ChangeSceneToFile("res://Game/Game.tscn");
         #endif
     }
 
     private void OnStartButtonPressed()
     {
-        _sceneChanger.ChangeScene("res://Game/Game.tscn");
+        _sceneChanger.ChangeSceneToFile("res://Game/Game.tscn");
     }
 }

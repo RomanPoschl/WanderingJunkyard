@@ -1,17 +1,17 @@
 using System.Data;
 
-public class Constants
+public partial class Constants
 {
     public const string Events = "/root/Events";
     public const string Universe = "/root/Universe";
     public const string MapView = "MapView";
 
-    public class PlayerConstants
+    public partial class PlayerConstants
     {
         public static string CollisionShape2D = "CollisionShape2D";
     }
 
-    public class MovementConstants
+    public partial class MovementConstants
     {
         public static string MoveRight = "move_right";
         public static string MoveLeft = "move_left";
@@ -19,7 +19,7 @@ public class Constants
         public static string MoveDown = "move_down";
     }
 
-    public class UIConstants
+    public partial class UIConstants
     {
         public const string MapDisplay = "MapDisplay";
 
@@ -31,7 +31,7 @@ public class Constants
         public const string BuildItemsContainer = "VBoxContainer/ScrollContainer/HBoxContainer";
     }
 
-    public class HUDConstants
+    public partial class HUDConstants
     {
 
     }

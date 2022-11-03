@@ -1,83 +1,74 @@
 using Godot;
 using System;
 
-public abstract class SnapablePlayer : SnapableComponent
+public abstract partial class SnapablePlayer : RigidBody2D
 {
-    Events _events;
+	Events _events;
 
-    public enum MainState
-    {
-        Building,
-        Flying,
-        Dead,
-    }
+	public enum MainState
+	{
+		Building,
+		Flying,
+		Dead,
+	}
 
-    public override void _Ready()
-    {
-        _currentState = MainState.Flying;
+	public override void _Ready()
+	{
+		_currentState = MainState.Flying;
 
-        _events = GetNode<Events>(Constants.Events);
-        _events.Connect(nameof(Events.OnBuildPressedSignal), this, nameof(EnterBuildState));
+		_events = GetNode<Events>(Constants.Events);
+		//Connect(nameof(Events.OnBuildPressedSignalEventHandler),new Callable(this,nameof(EnterBuildState)));
+		//Connect(nameof(Events.OnBuildClosePressedSignalEventHandler),new Callable(this,nameof(EnterFlyingState)));
+		_events.OnBuildPressedSignal += EnterBuildState;
+		_events.OnBuildClosePressedSignal += EnterFlyingState;
+		
+		FreezeMode = RigidBody2D.FreezeModeEnum.Kinematic;
+		Freeze = false;
 
-        base._Ready();
-    }
+		base._Ready();
+	}
 
-    MainState _currentState;
+	MainState _currentState;
 
-    public abstract void Flying();
+	public abstract void Flying();
 
-    public override void _IntegrateForces(Physics2DDirectBodyState state)
-    {
-        base._IntegrateForces(state);
+	public override void _IntegrateForces(PhysicsDirectBodyState2D state)
+	{
+		base._IntegrateForces(state);
 
-        switch (_currentState)
-        {
-            case MainState.Building:
-                break;
-            case MainState.Flying:
-                Flying();
-                break;
-            case MainState.Dead:
-                break;
-            default:
-                break;
-        }
-    }
+		switch (_currentState)
+		{
+			case MainState.Building:
+				break;
+			case MainState.Flying:
+				Flying();
+				break;
+			case MainState.Dead:
+				break;
+			default:
+				break;
+		}
+	}
 
-    void EnterBuildState()
-    {
-        Mode = RigidBody2D.ModeEnum.Kinematic;
-        ChangeState(MainState.Building);
-    }
+	Vector2 _positionStorage = new Vector2();
 
-    void EnterFlyingState()
-    {
-        Mode = RigidBody2D.ModeEnum.Rigid;
-        ChangeState(MainState.Flying);
-    }
-    
-    void ChangeState(MainState state)
-    {
-        _currentState = state;
-    }
+	void EnterBuildState()
+	{
+		_positionStorage = Position;
+		Freeze = true;
+		ChangeState(MainState.Building);
+	}
 
-    public override void AddComponent(Node2D component, Vector2 position)
-    {
-        base.AddComponent(component, position);
-
-        if(component is SnapableComponent com)
-        {
-            Mass += com.ComponentAffect.Weight;
-        }
-    }
-
-    public override void RemoveComponent(SnapableComponent component)
-    {
-        base.RemoveComponent(component);
-
-        if(component is SnapableComponent com)
-        {
-            Mass -= com.ComponentAffect.Weight;
-        }
-    }
+	void EnterFlyingState()
+	{
+		Position = _positionStorage;
+		Position = _positionStorage;
+		Freeze = false;
+		ChangeState(MainState.Flying);
+	}
+	
+	void ChangeState(MainState state)
+	{
+		_currentState = state;
+	}
 }

@@ -1,4 +1,4 @@
-public class Moon : CellestialObject
+public partial class Moon : CellestialObject
 {
     public override void _Ready()
     {

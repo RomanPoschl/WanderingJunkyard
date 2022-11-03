@@ -3,115 +3,99 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-public class SceneChanger : CanvasLayer
+public partial class SceneChanger : CanvasLayer
 {
-    public Node CurrentScene { get; set; }
-    ColorRect _curtain;
-    AnimationPlayer _animationPlayer;
-    ProgressBar _progressBar;
+	public Node CurrentScene { get; set; }
+	ColorRect _curtain;
+	AnimationPlayer _animationPlayer;
+	ProgressBar _progressBar;
+	Timer _timer;
+	string _path;
 
+	int _waitFrames;
+	ulong _timeMax = 20;
 
-    ResourceInteractiveLoader _loader;
-    int _waitFrames;
-    ulong _timeMax = 20;
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		_progressBar = GetNode<ProgressBar>("Curtain/ProgressBar");
+		_curtain = GetNode<ColorRect>("Curtain");
+		_curtain.MouseFilter = Control.MouseFilterEnum.Ignore;
+		_curtain.Color = new Color(0);
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        _progressBar = GetNode<ProgressBar>("Curtain/ProgressBar");
-        _curtain = GetNode<ColorRect>("Curtain");
-        _curtain.MouseFilter = Control.MouseFilterEnum.Ignore;
-        _curtain.Color = new Color(0);
+		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		var root = GetTree().Root;
+		CurrentScene = root.GetChild(root.GetChildCount() - 1);
 
-        Viewport root = GetTree().Root;
-        CurrentScene = root.GetChild(root.GetChildCount() - 1);
-    }
+		_timer = new Timer();
+		_timer.WaitTime = .5f;
+		_timer.Timeout += OnTimerTimeout;
+	}
 
-    public override void _Process(float delta)
-    {
-        base._Process(delta);
+	async void OnTimerTimeout()
+	{
+		var progressArray = new Godot.Collections.Array();
+		var status = ResourceLoader.LoadThreadedGetStatus(_path, progressArray);
+		var progress = (float)progressArray[0] * 100.0f;
 
-        if (_loader == null)
-        {
-            SetProcess(false);
-            return;
-        }
+		UpdateProgress(progress);
 
-        if(_waitFrames > 0)
-        {
-            _waitFrames -= 1;
-            return;
-        }
+		if(status == ResourceLoader.ThreadLoadStatus.Loaded)
+		{
+			var resource = ResourceLoader.LoadThreadedGet(_path);
+			await SetNewScene(resource);
+			_timer.Stop();
+		}
+		else if (status != ResourceLoader.ThreadLoadStatus.InProgress)
+		{
+			throw new Exception("Scene load failed");
+		}
+	}
 
-        var t = OS.GetTicksMsec();
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+	}
 
-        while(OS.GetTicksMsec() < t + _timeMax)
-        {
-            var err = _loader.Poll();
+	public async void ChangeSceneToFile(string nextScene)
+	{
+		_animationPlayer.Play("Fade");
+		await ToSignal(_animationPlayer, "animation_finished");
 
-            if (err == Error.FileEof)
-            {
-                var resource = _loader.GetResource();
-                _loader = null;
-                SetNewScene(resource);
-                break;
-            }
-            else if (err == Error.Ok)
-            {
-                UpdateProgress();
-            }
-            else 
-            {
-                _loader = null;
-                break;
-            }
-        }
-    }
+		_progressBar.Show();
 
-    public async void ChangeScene(string nextScene)
-    {
-        _animationPlayer.Play("Fade");
-        await ToSignal(_animationPlayer, "animation_finished");
+		GoToScene(nextScene);
+	}
 
-        _progressBar.Show();
+	void GoToScene(string nextScene)
+	{
+		CallDeferred(nameof(DeferredGotoScene), nextScene);
+	}
 
-        GoToScene(nextScene);
-    }
+	void DeferredGotoScene(string path)
+	{
+		_path = path;
+		ResourceLoader.LoadThreadedRequest(_path);
 
-    void GoToScene(string nextScene)
-    {
-        CallDeferred(nameof(DeferredGotoScene), nextScene);
-    }
+		SetProcess(true);
+		CurrentScene.QueueFree();
+		_waitFrames = 100;
+	}
 
-    void DeferredGotoScene(string path)
-    {
-        _loader = ResourceLoader.LoadInteractive(path);
+	void UpdateProgress(float progress)
+	{
+		_progressBar.Value = progress;
+	}
 
-        Debug.Assert(_loader != null);
+	async Task SetNewScene(Resource newScene)
+	{
+		CurrentScene = ((PackedScene)newScene).Instantiate();
+		GetTree().Root.AddChild(CurrentScene);
+		GetTree().CurrentScene = CurrentScene;
 
-        SetProcess(true);
-
-        CurrentScene.QueueFree();
-
-        _waitFrames = 100;
-    }
-
-    void UpdateProgress()
-    {
-        var progress = (float)(_loader.GetStage() / _loader.GetStageCount());
-        _progressBar.Value = progress;
-    }
-
-    async Task SetNewScene(Resource newScene)
-    {
-        CurrentScene = ((PackedScene)newScene).Instance();
-        GetTree().Root.AddChild(CurrentScene);
-        GetTree().CurrentScene = CurrentScene;
-
-        _progressBar.Hide();
-        _animationPlayer.PlayBackwards("Fade");
-        await ToSignal(_animationPlayer, "animation_finished");
-    }
+		_progressBar.Hide();
+		_animationPlayer.PlayBackwards("Fade");
+		await ToSignal(_animationPlayer, "animation_finished");
+	}
 }

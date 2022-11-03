@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj0xdm6bxl0ja"]
+
+[ext_resource type="Script" path="res://Game/Ships/AttackShips/MachineGun.cs" id="1_bec77"]
+[ext_resource type="Texture2D" uid="uid://cw2g0wjx5qn3l" path="res://art/platforms_MachineGunBody.svg" id="2_fig5y"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+resource_local_to_scene = true
+size = Vector2(10, 10)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v2r8v"]
+radius = 2189.32
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ok0l"]
+size = Vector2(250, 250)
+
+[node name="MachineGun" type="RigidBody2D"]
+can_sleep = false
+script = ExtResource("1_bec77")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="Node2D" type="Node2D" parent="."]
+scale = Vector2(0.04, 0.04)
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+texture = ExtResource("2_fig5y")
+
+[node name="Muzzle" type="Marker2D" parent="Node2D"]
+position = Vector2(0, -50)
+
+[node name="Vision" type="Area2D" parent="Node2D"]
+collision_layer = 0
+collision_mask = 16
+input_pickable = false
+
+[node name="CollisionShape2d" type="CollisionShape2D" parent="Node2D/Vision"]
+shape = SubResource("CircleShape2D_v2r8v")
+
+[node name="Engine" type="Marker2D" parent="Node2D"]
+position = Vector2(0, 131)
+
+[node name="NavigationAgent2d" type="NavigationAgent2D" parent="Node2D"]
+path_desired_distance = 100.0
+target_desired_distance = 100.0
+path_max_distance = 100.0
+avoidance_enabled = true
+
+[node name="NavigationTimer" type="Timer" parent="Node2D"]
+wait_time = 0.25
+
+[node name="NavigationObstacle2d" type="NavigationObstacle2D" parent="Node2D"]
+
+[node name="Body" type="Area2D" parent="Node2D"]
+
+[node name="CollisionShape2d" type="CollisionShape2D" parent="Node2D/Body"]
+shape = SubResource("RectangleShape2D_0ok0l")
+
+[connection signal="velocity_computed" from="Node2D/NavigationAgent2d" to="." method="OnNavigationAgent2DVelocityComputed"]
+[connection signal="timeout" from="Node2D/NavigationTimer" to="." method="OnNavigationTimerTimeout"]
+[connection signal="input_event" from="Node2D/Body" to="." method="OnArea2DInputEvent"]

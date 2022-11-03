@@ -1,6 +1,6 @@
 using Godot;
 
-public class ShipMeshVertex
+public partial class ShipMeshVertex
 {
     internal int Index {get; set;}
 

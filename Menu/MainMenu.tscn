@@ -14,17 +14,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -46.0
-margin_top = -51.0
-margin_right = 46.0
-margin_bottom = 35.0
+offset_left = -46.0
+offset_top = -51.0
+offset_right = 46.0
+offset_bottom = 35.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 theme = SubResource( 1 )
 
 [node name="Button" type="Button" parent="VFlowContainer"]
-margin_right = 92.0
-margin_bottom = 20.0
+offset_right = 92.0
+offset_bottom = 20.0
 text = "START GAME"
 
 [connection signal="pressed" from="VFlowContainer/Button" to="." method="OnStartButtonPressed"]

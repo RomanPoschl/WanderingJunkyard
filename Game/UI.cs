@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class UI : CanvasLayer
+public partial class UI : CanvasLayer
 {
     
     MapDisplay _map;
@@ -13,14 +13,15 @@ public class UI : CanvasLayer
         _map = GetNode<MapDisplay>(Constants.UIConstants.MapDisplay);
         _events = GetNode<Events>(Constants.Events);
 
-        _events.Connect(nameof(Events.OpenMap), this, nameof(ToggleMap));
+        _events.Connect(nameof(Events.OpenMap),new Callable(this,nameof(ToggleMap)));
+        //_events.OpenMapEvent += ToggleMap;
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
         base._UnhandledInput(@event);
 
-        if(@event.IsActionPressed(nameof(Events.OpenMap)) && !_map.IsAnimating)
+        if(@event.IsActionPressed("OpenMap") && !_map.IsAnimating)
         {
             _map.Toggle();
         }

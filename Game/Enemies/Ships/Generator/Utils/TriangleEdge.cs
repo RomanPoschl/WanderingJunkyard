@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 
-public class TriangleEdge
+public partial class TriangleEdge
 {
     public Vector2 PointA { get; private set; }
     public Vector2 PointB { get; private set; }

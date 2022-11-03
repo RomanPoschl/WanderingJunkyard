@@ -2,62 +2,103 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class Game : Node
+public partial class Game : Node
 {
-    MapView _mapView;
-    Universe _universe;
+	MapView _mapView;
+	Universe _universe;
 
-    Popup _mapPopup;
-    Button _mapCloseButton;
-    UniverseMap _universeMap;
+	Popup _mapPopup;
+	Button _mapCloseButton;
+	UniverseMap _universeMap;
 
-    public override void _Ready()
-    {
-        var events = GetNode<Events>(Constants.Events);
-        events.Connect(nameof(Events.OnJumpPressedSignal), this, nameof(OnJumpPressed));
-        _universe = GetNode<Universe>(Constants.Universe);
+	SectorGenerator _sector;
+	Marker2D _startPosition;
 
-        _mapView = GetNode<MapView>(Constants.MapView);
+	public override void _Ready()
+	{
+		_startPosition = GetNode<Marker2D>("StartPosition");
+		SetNavigationRegion();
 
-        _mapPopup = GetNode<Popup>(Constants.UIConstants.UniverseMapPopUp);
-        _mapCloseButton = GetNode<Button>(Constants.UIConstants.UniveseMapClose);
-        _universeMap = GetNode<UniverseMap>(Constants.UIConstants.UniveseMap);
+		var events = GetNode<Events>(Constants.Events);
+		events.OnJumpPressedSignal += OnJumpPressed;
 
-        GD.Randomize();
-        NewGame();
-    }
-    
-    private void game_over()
-    {
-        GetNode<HUD>("HUD").ShowGameOver();
-    }
-    
-    public void NewGame()
-    {
-        var player = GetNode<Player>("Player");
-        var startPosition = GetNode<Position2D>("StartPosition");
-        player.Start(startPosition.Position);
+		_universe = GetNode<Universe>(Constants.Universe);
 
-        _universe.NewGame();
-        var currentSector = _universe.GetCurrentMapCell();
+		_mapView = GetNode<MapView>(Constants.MapView);
 
-        GD.Print($"Current sector {currentSector.HexPosition.ToVector3()} {currentSector.OffsetCoordFromHex.ToVector2()} {currentSector.NoiseSeed}");
+		_mapPopup = GetNode<Popup>(Constants.UIConstants.UniverseMapPopUp);
+		_mapCloseButton = GetNode<Button>(Constants.UIConstants.UniveseMapClose);
+		_universeMap = GetNode<UniverseMap>(Constants.UIConstants.UniveseMap);
 
-        var hud = GetNode<HUD>("UI/HUD");
-        hud.ShowMessage("Get Ready!");
+		_sector = GetNode<SectorGenerator>("Sector");
 
-        _universeMap.Display(_universe.MapCellGrid);
-    }
+		GD.Randomize();
+		NewGame();
+	}
+	
+	void SetNavigationRegion()
+	{
+		try
+		{
+			var regionRId = NavigationServer2D.RegionCreate();
+			var defaultMapRid = _startPosition.GetWorld2d().NavigationMap;
+			NavigationServer2D.RegionSetMap(regionRId, defaultMapRid);
 
-    private void OnJumpPressed()
-    {
-        //TODO Show universe map
-        GD.Print("JUMP");
-        _mapPopup.Popup_();
-    }
+			var navPoly = new NavigationPolygon();
 
-    void OnCloseButtonPressed()
-    {
-        _mapPopup.Hide();
-    }
+			var shape = new Vector2[6];
+			var r = 1000000;
+
+			for(var a = 0; a < 6; a++)
+			{
+				shape[a] = new Vector2(
+					//_startPosition.Position.x + r * (Mathf.Cos(a * 60 * Mathf.Pi / 180f)),
+					0 + r * (Mathf.Cos(a * 60 * Mathf.Pi / 180f)),
+					//_startPosition.Position.y + r * (Mathf.Cos(a * 60 * Mathf.Pi / 180f)));
+					0 + r * (Mathf.Cos(a * 60 * Mathf.Pi / 180f)));
+			}
+
+			navPoly.AddOutline(shape);
+			navPoly.MakePolygonsFromOutlines();
+
+			NavigationServer2D.RegionSetNavpoly(regionRId, navPoly);
+		}
+		catch (System.Exception e)
+		{
+			GD.Print(e.Message);
+		}
+	}
+
+	private void game_over()
+	{
+		GetNode<HUD>("HUD").ShowGameOver();
+	}
+	
+	public void NewGame()
+	{
+		var player = GetNode<Player>("Player");
+		player.Start(_startPosition.Position);
+
+		_universe.NewGame();
+		var currentSector = _universe.GetCurrentMapCell();
+
+		GD.Print($"Current sector {currentSector.HexPosition.ToVector3()} {currentSector.OffsetCoordFromHex.ToVector2()} {currentSector.NoiseSeed}");
+
+		var hud = GetNode<HUD>("UI/HUD");
+		hud.ShowMessage("Get Ready!");
+
+		_universeMap.Display(_universe.MapCellGrid);
+	}
+
+	private void OnJumpPressed()
+	{
+		//TODO Show universe map
+		GD.Print("JUMP");
+		_mapPopup.Popup();
+	}
+
+	void OnCloseButtonPressed()
+	{
+		_mapPopup.Hide();
+	}
 }

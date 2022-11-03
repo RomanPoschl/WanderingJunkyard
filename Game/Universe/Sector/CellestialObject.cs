@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using Godot;
 
-public class CellestialObject : RigidBody2D
+public partial class CellestialObject : RigidBody2D
 {
     float _gravitionalConstant = 0.0001f;
     Vector2 _lastPosition;

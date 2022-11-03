@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class PlayerCamera2D : Camera2D
+public partial class PlayerCamera2D : Camera2D
 {
     Events _events;
     Tween _tween;
@@ -11,7 +11,7 @@ public class PlayerCamera2D : Camera2D
     float _lastDragInstance;
     float _zoomSensitivity = 10f;
     float _zoomSpeed = 0.05f;
-    float _defaultZoom = 5f;
+    float _defaultZoom = 2f;
     float _minPinchZoom = 0.5f;
     float _maxPinchZoom = 5f;
     float _fromGameToMapThreshold = 2f;
@@ -22,9 +22,11 @@ public class PlayerCamera2D : Camera2D
     {
         _events = GetNode<Events>("/root/Events");
         _remoteMap = GetNode<RemoteTransform2D>("RemoteMap");
-        _tween = GetNode<Tween>("Tween");
+        
+        _tween = CreateTween(); //GetNode<Tween>("Tween");
 
-        _events.Connect("MapToggled", this, nameof(ToggleMap));
+        _events.Connect(nameof(Events.MapToggled), new Callable(this,nameof(ToggleMap)));
+        //_events.MapToggled += ToggleMap;
 
         Zoom = Vector2.One * _defaultZoom;
     }
@@ -82,13 +84,19 @@ public class PlayerCamera2D : Camera2D
     {
         if(show)
         {
-            _tween.InterpolateProperty(this, "zoom", Zoom, Vector2.One * _maxPinchZoom, duration, Tween.TransitionType.Linear, Tween.EaseType.OutIn);
+            _tween.TweenProperty(this, "zoom", Vector2.One * _maxPinchZoom, duration)
+                .From(Zoom)
+                .SetTrans(Tween.TransitionType.Linear)
+                .SetEase(Tween.EaseType.OutIn);
         }
         else
         {
-            _tween.InterpolateProperty(this, "zoom", Zoom, Vector2.One * _defaultMapZoom, duration, Tween.TransitionType.Linear, Tween.EaseType.OutIn);
+            _tween.TweenProperty(this, "zoom", Vector2.One * _defaultMapZoom, duration)
+                .From(Zoom)
+                .SetTrans(Tween.TransitionType.Linear)
+                .SetEase(Tween.EaseType.OutIn);
         }
 
-        _tween.Start();
+        _tween.Play();
     }
 }

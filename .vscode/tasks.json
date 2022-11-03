@@ -3,14 +3,13 @@
     "tasks": [
         {
             "label": "build",
-            "command": "C:\\Users\\marti\\Desktop\\Godot_v3.5\\Godot_v3.5.exe",
+            "command": "dotnet",
             "type": "process",
             "args": [
-                "--build-solutions",
-                "--path",
-                "${workspaceRoot}",
-                "--no-window",
-                "-q"
+                "build",
+                "${workspaceFolder}/WanderingJunkyard.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -20,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/RollingCityDefense.csproj",
+                "${workspaceFolder}/WanderingJunkyard.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -34,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/RollingCityDefense.csproj"
+                "${workspaceFolder}/WanderingJunkyard.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

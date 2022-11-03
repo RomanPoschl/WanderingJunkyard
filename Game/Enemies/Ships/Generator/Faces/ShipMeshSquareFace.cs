@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-public class ShipMeshSquareFace : ShipMeshFace
+public partial class ShipMeshSquareFace : ShipMeshFace
 {
     public override Vector3 Normal
     {
@@ -125,12 +125,12 @@ public class ShipMeshSquareFace : ShipMeshFace
         for (var i = 0; i < steps; i++)
         {
             // horizontal
-            var hfrom = this.LeftTop.Coordinates.LinearInterpolate(this.RightTop.Coordinates, ((float)i) / (steps - 1));
-            var hto = this.LeftBottom.Coordinates.LinearInterpolate(this.RightBottom.Coordinates, ((float)i) / (steps - 1));
+            var hfrom = this.LeftTop.Coordinates.Lerp(this.RightTop.Coordinates, ((float)i) / (steps - 1));
+            var hto = this.LeftBottom.Coordinates.Lerp(this.RightBottom.Coordinates, ((float)i) / (steps - 1));
 
             // vertical
-            var vfrom = this.LeftTop.Coordinates.LinearInterpolate(this.LeftBottom.Coordinates, ((float)i) / (steps - 1));
-            var vto = this.RightTop.Coordinates.LinearInterpolate(this.RightBottom.Coordinates, ((float)i) / (steps - 1));
+            var vfrom = this.LeftTop.Coordinates.Lerp(this.LeftBottom.Coordinates, ((float)i) / (steps - 1));
+            var vto = this.RightTop.Coordinates.Lerp(this.RightBottom.Coordinates, ((float)i) / (steps - 1));
 
             topPoints.Add(hfrom);
             bottomPoints.Add(hto);
@@ -174,7 +174,7 @@ public class ShipMeshSquareFace : ShipMeshFace
         return result.ToArray();
     }
 
-    public override float Area()
+    public override float Area3D()
     {
         return this.Width * this.Height;
     }

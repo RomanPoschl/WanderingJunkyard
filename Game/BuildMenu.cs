@@ -2,71 +2,105 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class BuildMenu : PopupPanel
+public partial class BuildMenu : PopupPanel
 {
 
-    HBoxContainer _buildItemsContainer;
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        var events = GetNode<Events>(Constants.Events);
-        events.Connect(nameof(Events.OnBuildPressedSignal), this, nameof(OnBuildPressed));
+	HBoxContainer _buildItemsContainer;
+	Events _events;
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		_events = GetNode<Events>(Constants.Events);
+		
+		_events.Connect(nameof(Events.OnBuildPressedSignal),new Callable(this,nameof(OnBuildPressed)));
+		
+		_events.Connect(nameof(Events.OnPlatformPlaced),new Callable(this,nameof(PlatformPlaced)));
 
-        _buildItemsContainer = GetNode<HBoxContainer>(Constants.UIConstants.BuildItemsContainer);
-    }
+		_buildItemsContainer = GetNode<HBoxContainer>(Constants.UIConstants.BuildItemsContainer);
+	}
 
-    void OnBuildPressed()
-    {
-        GD.Print("BUILD");
+	void OnBuildPressed()
+	{
+		GD.Print("BUILD");
 
-        FillBuildMenu();
+		FillBuildMenu();
 
-        Popup_();
-    }
+		Popup();
+	}
 
-    void FillBuildMenu()
-    {
-        var gun1 = ResourceLoader.Load<PackedScene>("res://Game/Platforms/Weapon/MachineGun.tscn").Instance<SnapableComponent>();
-        gun1.WeaponState = SnapableComponent.SnapableComponentState.idle;
-        gun1.Position = new Vector2(34, 34);
-        gun1.GetNode<Node2D>("Node2D").Scale = new Vector2(0.2f, 0.2f);
+	void FillBuildMenu()
+	{
+		var childs = _buildItemsContainer.GetChildren();
+		foreach (var item in childs)
+		{
+			((Node)item).QueueFree();
+		}
 
-        var btn1 = ResourceLoader.Load<PackedScene>("res://Game/Button.tscn").Instance<Button>();
-        btn1.AddChild(gun1);
-        btn1.Connect("pressed", this, nameof(OnItemPressed), new Godot.Collections.Array(new List<string>() { "1" }));
-        btn1.RectSize = btn1.RectMinSize = new Vector2(68, 68);
-        btn1.MarginRight = 68;
-        btn1.MarginBottom = 68;
-        btn1.RectClipContent = true;
+		AddBuildItem("res://Game/Ships/AttackShips/MachineGun.tscn");
+	}
 
-        _buildItemsContainer.AddChild(btn1);
+	void AddBuildItem(string path)
+	{
+		var platformPreLoad = ResourceLoader.Load<PackedScene>(path);
 
-        var gun = ResourceLoader.Load<PackedScene>("res://Game/Platforms/Weapon/MachineGun.tscn").Instance<SnapableComponent>();
-        gun.WeaponState = SnapableComponent.SnapableComponentState.idle;
-        gun.Position = new Vector2(34, 34);
-        gun.GetNode<Node2D>("Node2D").Scale = new Vector2(0.2f, 0.2f);
+		//Platform for button
+		var platform = platformPreLoad.Instantiate<ShipBoidBase>();
+		platform.WeaponState = ShipBoidBase.SnapableComponentState.idle;
+		platform.Position = new Vector2(34, 34);
+		platform.GetNode<Node2D>("Node2D").Scale = new Vector2(0.2f, 0.2f); // Scale down for display in build menu
 
-        var btn = ResourceLoader.Load<PackedScene>("res://Game/Button.tscn").Instance<Button>();
-        btn.AddChild(gun);
-        btn.Connect("pressed", this, nameof(OnItemPressed), new Godot.Collections.Array(new List<string>() { "2" }));
-        btn.RectSize = btn.RectMinSize = new Vector2(68, 68);
-        btn.MarginRight = 68;
-        btn.MarginBottom = 68;
-        btn.RectClipContent = true;
+		//Button
+		var btn = ResourceLoader.Load<PackedScene>("res://Game/Button.tscn").Instantiate<Button>();
+		btn.AddChild(platform);
+		var arr = new Godot.Collections.Array();
+		arr.Add(platformPreLoad);
+		arr.Add(btn);
 
-        _buildItemsContainer.AddChild(btn);
-    }
+		//btn.Connect("pressed",new Callable(this, nameof(OnItemPressed)));
+		btn.Pressed += () => OnItemPressed(platformPreLoad, btn);
 
-    void OnItemPressed(string number)
-    {
-        Console.WriteLine($"PRESSED {number}");
-        GD.Print($"PRESSED {number}");
-    }
+		btn.Size = btn.CustomMinimumSize = new Vector2i(68, 68);
+		btn.OffsetRight = 68;
+		btn.OffsetBottom = 68;
+		btn.ClipContents = true;
 
-    void OnBuildClosePressed()
-    {
-        GD.Print("HIDE BUILD");
-        Hide();
-        EmitSignal(nameof(Events.OnBuildClosePressedSignal));
-    }
+		//Place button
+		_buildItemsContainer.AddChild(btn);
+	}
+
+	void OnItemPressed(PackedScene platform, Button btn)
+	{
+		GD.Print($"PRESSED {platform.ResourceName}");
+
+		var node = GetNode<Node>("/root/Game");
+		var player = node.GetNode<Node2D>("Player");
+		var platformInstance = platform.Instantiate<ShipBoidBase>();
+		platformInstance.WeaponState = ShipBoidBase.SnapableComponentState.grabbing;
+		platformInstance.GlobalPosition = player.GetGlobalMousePosition();
+		
+		node.AddChild(platformInstance);
+
+		Hide();
+		
+		
+	}
+
+	void PlatformPlaced()
+	{
+		OnBuildPressed();
+	}
+
+	void OnBuildClosePressed()
+	{
+		GD.Print("HIDE BUILD");
+		Hide();
+
+		var childs = _buildItemsContainer.GetChildren();
+		foreach (var item in childs)
+		{
+			((Node)item).QueueFree();
+		}
+		
+		_events.EmitSignal(nameof(Events.OnBuildClosePressedSignal));
+	}
 }

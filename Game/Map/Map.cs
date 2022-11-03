@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Map : Node2D
+public partial class Map : Node2D
 {
     Universe _universe;
 

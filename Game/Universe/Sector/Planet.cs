@@ -1,4 +1,4 @@
-public class Planet : CellestialObject
+public partial class Planet : CellestialObject
 {
 
     public override void _Ready()

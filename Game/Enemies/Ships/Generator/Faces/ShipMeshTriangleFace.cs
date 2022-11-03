@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public class ShipMeshTriangleFace : ShipMeshFace
+public partial class ShipMeshTriangleFace : ShipMeshFace
 {
     public ShipMeshTriangleFace(ShipMeshVertex a, ShipMeshVertex b, ShipMeshVertex c) : base(new ShipMeshVertex[] { a, b, c })
     {
@@ -32,7 +32,7 @@ public class ShipMeshTriangleFace : ShipMeshFace
 
     public override ShipMeshVertex RightTop { get { throw new System.NotImplementedException(); } }
 
-    public override float Area()
+    public override float Area3D()
     {
         throw new System.NotImplementedException();
     }

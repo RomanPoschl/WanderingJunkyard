@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-public class ShipMeshFactory
+public partial class ShipMeshFactory
 {
     public static ShipMesh CreateCube(float size = 1)
     {

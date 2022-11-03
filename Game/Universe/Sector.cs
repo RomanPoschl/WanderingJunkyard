@@ -2,7 +2,7 @@ using Godot;
 using System.Collections.Generic;
 
 
-public class Sector
+public partial class Sector
 {
     public Vector2 Position { get; set; }
     public float NoiseSeed { get; set; }

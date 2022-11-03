@@ -2,13 +2,12 @@ using Godot;
 using System;
 using System.Linq;
 
-public class MapCell : Area2D
+public partial class MapCell : Area2D
 {
     Polygon2D _poly;
     CollisionPolygon2D _collisionPoly;
     Vector2[] _shape;
-
-    Layout _layout = new Layout(Layout.flat, new Point(50, 50), new Point(0, 0));
+    readonly Layout _layout = new(Layout.flat, new Point(50, 50), new Point(0, 0));
 
     public Hex HexPosition { get; set; }
     public OffsetCoord OffsetCoordFromHex => HexPosition != null ? OffsetCoord.QoffsetFromCube(OffsetCoord.EVEN, HexPosition) : null;
@@ -66,5 +65,72 @@ public class MapCell : Area2D
     void OnMapCellInputEvent(Node viewPort, InputEvent @event, int shapeId)
     {
 
+    }
+
+    public override int GetHashCode()
+    {
+        HashCode hash = new HashCode();
+        hash.Add(NativeInstance);
+        hash.Add(_ImportPath);
+        hash.Add(Name);
+        hash.Add(UniqueNameInOwner);
+        hash.Add(SceneFilePath);
+        hash.Add(Owner);
+        hash.Add(Multiplayer);
+        hash.Add(ProcessMode);
+        hash.Add(ProcessPriority);
+        hash.Add(EditorDescription);
+        hash.Add(Visible);
+        hash.Add(Modulate);
+        hash.Add(SelfModulate);
+        hash.Add(ShowBehindParent);
+        hash.Add(TopLevel);
+        hash.Add(ClipChildren);
+        hash.Add(LightMask);
+        hash.Add(TextureFilter);
+        hash.Add(TextureRepeat);
+        hash.Add(Material);
+        hash.Add(UseParentMaterial);
+        hash.Add(Position);
+        hash.Add(Rotation);
+        hash.Add(Scale);
+        hash.Add(Skew);
+        hash.Add(Transform);
+        hash.Add(GlobalPosition);
+        hash.Add(GlobalRotation);
+        hash.Add(GlobalScale);
+        hash.Add(GlobalSkew);
+        hash.Add(GlobalTransform);
+        hash.Add(ZIndex);
+        hash.Add(ZAsRelative);
+        hash.Add(YSortEnabled);
+        hash.Add(DisableMode);
+        hash.Add(CollisionLayer);
+        hash.Add(CollisionMask);
+        hash.Add(CollisionPriority);
+        hash.Add(InputPickable);
+        hash.Add(Monitoring);
+        hash.Add(Monitorable);
+        hash.Add(Priority);
+        hash.Add(GravitySpaceOverride);
+        hash.Add(GravityPoint);
+        hash.Add(GravityPointDistanceScale);
+        hash.Add(GravityPointCenter);
+        hash.Add(GravityDirection);
+        hash.Add(Gravity);
+        hash.Add(LinearDampSpaceOverride);
+        hash.Add(LinearDamp);
+        hash.Add(AngularDampSpaceOverride);
+        hash.Add(AngularDamp);
+        hash.Add(AudioBusOverride);
+        hash.Add(AudioBusName);
+        hash.Add(_poly);
+        hash.Add(_collisionPoly);
+        hash.Add(_shape);
+        hash.Add(_layout);
+        hash.Add(HexPosition);
+        hash.Add(OffsetCoordFromHex);
+        hash.Add(NoiseSeed);
+        return hash.ToHashCode();
     }
 }

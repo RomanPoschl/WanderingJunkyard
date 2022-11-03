@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Play",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "C:\\Users\\marti\\Desktop\\Godot_v4.0\\Godot_v4.0-beta2_mono_win64.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+        },
+        {
             "name": "Play in Editor",
             "type": "godot-mono",
             "mode": "playInEditor",
@@ -16,7 +26,7 @@
             "request": "launch",
             "mode": "executable",
             "preLaunchTask": "build",
-            "executable": "C:\\Users\\marti\\Desktop\\Godot_v3.5\\Godot_v3.5.exe",
+            "executable": "C:\\Users\\marti\\Desktop\\Godot_v4.0\\Godot_v4.0-beta2_mono_win64.exe",
             // See which arguments are available here:
             // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
             "executableArguments": [
@@ -30,7 +40,7 @@
             "request": "launch",
             "mode": "executable",
             "preLaunchTask": "build",
-            "executable": "C:\\Users\\marti\\Desktop\\Godot_v3.5\\Godot_v3.5.exe",
+            "executable": "C:\\Users\\marti\\Desktop\\Godot_v4.0\\Godot_v4.0-beta2_mono_win64.exe",
             // See which arguments are available here:
             // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
             "executableArguments": [

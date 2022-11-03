@@ -1,4 +1,4 @@
-public class Asteroid : CellestialObject
+public partial class Asteroid : CellestialObject
 {
     public override void _Ready()
     {
