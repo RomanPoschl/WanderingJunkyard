@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public abstract partial class SnapablePlayer : RigidBody2D
+public abstract partial class SnapablePlayer : RigidBody3D
 {
 	Events _events;
 
@@ -17,12 +17,10 @@ public abstract partial class SnapablePlayer : RigidBody2D
 		_currentState = MainState.Flying;
 
 		_events = GetNode<Events>(Constants.Events);
-		//Connect(nameof(Events.OnBuildPressedSignalEventHandler),new Callable(this,nameof(EnterBuildState)));
-		//Connect(nameof(Events.OnBuildClosePressedSignalEventHandler),new Callable(this,nameof(EnterFlyingState)));
 		_events.OnBuildPressedSignal += EnterBuildState;
 		_events.OnBuildClosePressedSignal += EnterFlyingState;
 		
-		FreezeMode = RigidBody2D.FreezeModeEnum.Kinematic;
+		FreezeMode = RigidBody3D.FreezeModeEnum.Kinematic;
 		Freeze = false;
 
 		base._Ready();
@@ -32,7 +30,7 @@ public abstract partial class SnapablePlayer : RigidBody2D
 
 	public abstract void Flying();
 
-	public override void _IntegrateForces(PhysicsDirectBodyState2D state)
+	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
 		base._IntegrateForces(state);
 
@@ -50,7 +48,7 @@ public abstract partial class SnapablePlayer : RigidBody2D
 		}
 	}
 
-	Vector2 _positionStorage = new Vector2();
+	Vector3 _positionStorage = new ();
 
 	void EnterBuildState()
 	{
@@ -61,7 +59,6 @@ public abstract partial class SnapablePlayer : RigidBody2D
 
 	void EnterFlyingState()
 	{
-		Position = _positionStorage;
 		Position = _positionStorage;
 		Freeze = false;
 		ChangeState(MainState.Flying);

@@ -21,14 +21,14 @@ public partial class MachineGun : WeaponBase
 
 	public override void Shoot()
 	{
-		if(_bulletScene == null)
-			GD.PrintErr("MachineGun _bulletScene is null");
+		// if(_bulletScene == null)
+		// 	GD.PrintErr("MachineGun _bulletScene is null");
 		
-		lastShot = Time.GetTicksMsec() / 1000f;
+		// lastShot = Time.GetTicksMsec() / 1000f;
 
-		var bullet = (BulletBase)_bulletScene.Instantiate();
-		bullet.Start(GetNode<Node2D>("Muzzle").GlobalPosition, GetParent<Node2D>().GlobalRotation);
-		GetParent().GetParent().AddChild(bullet);
+		// var bullet = (BulletBase)_bulletScene.Instantiate();
+		// bullet.Start(GetNode<Node2D>("Muzzle").GlobalPosition, GetParent<Node2D>().GlobalRotation);
+		// GetParent().GetParent().AddChild(bullet);
 	}
 
 	public override void _Process(double delta)

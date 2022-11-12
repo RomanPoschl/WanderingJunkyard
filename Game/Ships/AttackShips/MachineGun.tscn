@@ -40,22 +40,13 @@ shape = SubResource("CircleShape2D_v2r8v")
 [node name="Engine" type="Marker2D" parent="Node2D"]
 position = Vector2(0, 131)
 
-[node name="NavigationAgent2d" type="NavigationAgent2D" parent="Node2D"]
-path_desired_distance = 100.0
-target_desired_distance = 100.0
-path_max_distance = 100.0
-avoidance_enabled = true
-
 [node name="NavigationTimer" type="Timer" parent="Node2D"]
 wait_time = 0.25
-
-[node name="NavigationObstacle2d" type="NavigationObstacle2D" parent="Node2D"]
 
 [node name="Body" type="Area2D" parent="Node2D"]
 
 [node name="CollisionShape2d" type="CollisionShape2D" parent="Node2D/Body"]
 shape = SubResource("RectangleShape2D_0ok0l")
 
-[connection signal="velocity_computed" from="Node2D/NavigationAgent2d" to="." method="OnNavigationAgent2DVelocityComputed"]
 [connection signal="timeout" from="Node2D/NavigationTimer" to="." method="OnNavigationTimerTimeout"]
 [connection signal="input_event" from="Node2D/Body" to="." method="OnArea2DInputEvent"]

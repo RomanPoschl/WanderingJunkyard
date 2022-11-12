@@ -1,12 +1,12 @@
 using Godot;
 using System;
 
-public partial class Engine : Sprite2D
+public partial class Engine : Sprite3D
 {
-    CPUParticles2D _particles;
+    CPUParticles3D _particles;
     public override void _Ready()
     {
-        _particles = GetNode<CPUParticles2D>("GPUParticles2D");
+        _particles = GetNode<CPUParticles3D>("GPUParticles2D");
     }
 
     public void OnPlayerEnginesOn(bool on)

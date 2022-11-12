@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://ddko3umygssw8"]
+
+[ext_resource type="Script" path="res://Game/Universe/Sector/Planet/PlanetConfiguration.cs" id="1_c7imy"]
+[ext_resource type="Resource" uid="uid://ds2ukf6e6rjov" path="res://Game/Universe/Sector/Planet/PlanetNoise.tres" id="1_mnuaa"]
+
+[resource]
+script = ExtResource("1_c7imy")
+Resolution = 20
+Radius = 94.047
+PlanetNoises = [ExtResource("1_mnuaa")]

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class PlayerCamera2D : Camera2D
+public partial class PlayerCamera3D : Camera3D
 {
     Events _events;
     Tween _tween;
@@ -28,7 +28,7 @@ public partial class PlayerCamera2D : Camera2D
         _events.Connect(nameof(Events.MapToggled), new Callable(this,nameof(ToggleMap)));
         //_events.MapToggled += ToggleMap;
 
-        Zoom = Vector2.One * _defaultZoom;
+        Fov = 75f * _defaultZoom;
     }
 
     List<InputEventScreenDrag> _inputEvents = new List<InputEventScreenDrag>();
@@ -40,7 +40,7 @@ public partial class PlayerCamera2D : Camera2D
         if(@event is InputEventScreenTouch touch && !touch.IsPressed())
         {
             _inputEvents.Clear();
-            Zoom = Vector2.One * _defaultZoom;
+            Fov = 75f * _defaultZoom;
         }
 
         if(@event is InputEventScreenDrag drag)
@@ -59,9 +59,9 @@ public partial class PlayerCamera2D : Camera2D
 
                     if(newZoom < _fromGameToMapThreshold)
                     {
-                        newZoom = Mathf.Clamp(Zoom.x * newZoom, _minPinchZoom, _maxPinchZoom);
+                        newZoom = Mathf.Clamp(Fov * newZoom, _minPinchZoom, _maxPinchZoom);
 
-                        Zoom = Vector2.One * newZoom;
+                        Fov = 75f * newZoom;
                         _lastDragInstance = dragDistance;
                     }
                     else
@@ -75,7 +75,7 @@ public partial class PlayerCamera2D : Camera2D
 
     public void SetCameraMap(MapView map)
     {
-        var cameraMap = (PlayerCamera2D)this.Duplicate();
+        var cameraMap = (PlayerCamera3D)this.Duplicate();
         map.RegisterCamera(cameraMap);
         _remoteMap.RemotePath = cameraMap.GetPath();
     }
@@ -84,15 +84,15 @@ public partial class PlayerCamera2D : Camera2D
     {
         if(show)
         {
-            _tween.TweenProperty(this, "zoom", Vector2.One * _maxPinchZoom, duration)
-                .From(Zoom)
+            _tween.TweenProperty(this, "zoom", 75f * _maxPinchZoom, duration)
+                .From(Fov)
                 .SetTrans(Tween.TransitionType.Linear)
                 .SetEase(Tween.EaseType.OutIn);
         }
         else
         {
-            _tween.TweenProperty(this, "zoom", Vector2.One * _defaultMapZoom, duration)
-                .From(Zoom)
+            _tween.TweenProperty(this, "zoom", 75f * _defaultMapZoom, duration)
+                .From(Fov)
                 .SetTrans(Tween.TransitionType.Linear)
                 .SetEase(Tween.EaseType.OutIn);
         }

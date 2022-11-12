@@ -2,54 +2,43 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public abstract partial class ShipBoidBase : RigidBody2D
+public abstract partial class ShipBase : RigidBody3D
 {
-	public enum SnapableComponentState
+	public enum DragAndDropShipState
 	{
 		idle,
 		grabbing,
 		inFlock,
+		attacking,
 		dead
 	}
 
-	float _maxSpeed = 2000f;
-	Vector2 _maxSpeedVector;
-
-
+	float _maxSpeed = 20f;
 	Events _events;
-	SnapableComponentState _weaponState;
-	public SnapableComponentState WeaponState { get => _weaponState; set => _weaponState = value; }
-	public PackedScene _bulletScene;
-
-	Node2D _components;
-
-	bool _connectedToBase = false;
-	bool _nonBaseConnected = false;
-
+	DragAndDropShipState _shipState;
+	public DragAndDropShipState ShipState { get => _shipState; set => _shipState = value; }
 	Area2D _vision;
-	bool placingPosible = false;
-
 	Marker2D _engine;
-
-	NavigationAgent2D _navigationAgent;
 	Player _player;
+	Node3D? _enemy;
+
 	float _distanceToPlayer;
 	float _angleToPlayer;
+	Vector2 _velocity;
+	Vector3 _target;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_weaponState = SnapableComponentState.idle;
-		_components = GetNode<Node2D>("Node2D/Components");
+		_shipState = DragAndDropShipState.idle;
+
 		_events = GetNode<Events>(Constants.Events);
+		_events.Connect(nameof(Events.OnEnemyTargetedEventHandler), new Callable(this, nameof(OnEnemyTargeted)));
+
 		_vision = GetNode<Area2D>("Node2D/Vision");
 		_engine = GetNode<Marker2D>("Node2D/Engine");
-		_navigationAgent = GetNode<NavigationAgent2D>("Node2D/NavigationAgent2d");
-		_navigationAgent.MaxSpeed = _maxSpeed;
 
 		_player = GetNode<Player>("/root/Game/Player");
-
-		_maxSpeedVector = new Vector2(_maxSpeed, _maxSpeed);
+		
 
 		GetNode<Timer>("Node2D/NavigationTimer").Start();
 	}
@@ -58,22 +47,45 @@ public abstract partial class ShipBoidBase : RigidBody2D
 	{
 		base._Process(delta);
 
-		switch (_weaponState)
+		if(_shipState == DragAndDropShipState.grabbing)
 		{
-			case SnapableComponentState.idle:
-				break;
-			case SnapableComponentState.grabbing:
-				Position = GetGlobalMousePosition();
-
-				var visibleBodies = _vision.GetOverlappingBodies();
-				placingPosible = visibleBodies.Count > 0;
-
-				break;
-			case SnapableComponentState.dead:
-				break;
-			default:
-				return;
+			var mouse = GetViewport().GetMousePosition();
+			Position = new Vector3(mouse.x, mouse.y, 0);
 		}
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		if(_shipState != DragAndDropShipState.inFlock)
+			return;
+
+		if(IsDistanceToPlayerEqual() && IsAngleToPlayerEqual())
+			return;
+
+		var newVelocity = (_target - Transform.origin).Normalized() * _maxSpeed;
+		ApplyCentralForce(newVelocity);
+		Rotation = _player.Rotation;
+	}
+
+	public void OnNavigationTimerTimeout()
+	{
+		if(_shipState == DragAndDropShipState.inFlock)
+		{
+			var test = Vector3.Right.Rotated(Vector3.Up, _player.Rotation.z + _angleToPlayer);
+			var targetPosition = _player.Position + (test * -_distanceToPlayer);
+			SetTarget(targetPosition);
+		}
+		else if(_shipState == DragAndDropShipState.attacking && _enemy != null)
+		{
+			var x = Vector3.Right * 100;
+			var targetPosition = _enemy.Position + x;
+			SetTarget(targetPosition);
+		}
+	}
+
+	void SetTarget(Vector3 targetPosition)
+	{
+		_target = targetPosition;
 	}
 
 	public bool IsDistanceToPlayerEqual()
@@ -84,29 +96,8 @@ public abstract partial class ShipBoidBase : RigidBody2D
 
 	public bool IsAngleToPlayerEqual()
 	{
-		var angle = this.GetAngleTo(_player.Position);
-		return Mathf.IsEqualApprox(angle, _angleToPlayer);
-	}
-
-	public void SetTarget(Vector2 targetPosition)
-	{
-		_navigationAgent.SetTargetLocation(targetPosition);
-	}
-
-	public override void _PhysicsProcess(double delta)
-	{
-		if(_weaponState != SnapableComponentState.inFlock)
-			return;
-
-		if(IsDistanceToPlayerEqual() || IsAngleToPlayerEqual())
-			return;
-
-		var nextPathPosition = _navigationAgent.GetNextLocation();
-		var currentPosition = GlobalPosition;
-		var direction = (nextPathPosition - currentPosition);
-		var directionNormalized = direction.Normalized();
-		var newVelocity = directionNormalized * _maxSpeed * (float)delta;
-		_navigationAgent.SetVelocity(newVelocity);
+		var angle = this.Position.DirectionTo(_player.Position);
+		return Mathf.IsEqualApprox(angle.z, _angleToPlayer);
 	}
 
 	public void OnArea2DInputEvent(Node viewPort, InputEvent @event, int shapeIdx)
@@ -135,60 +126,35 @@ public abstract partial class ShipBoidBase : RigidBody2D
 		// }
 	}
 
+	public void OnEnemyTargeted(Node3D enemy)
+	{
+		_shipState = DragAndDropShipState.attacking;
+		_enemy = enemy;
+	}
+
 	private void PlaceBoidToFlock()
 	{
-		_angleToPlayer = this.GetAngleTo(_player.Position);
+		_angleToPlayer = this.Position.DirectionTo(_player.Position).z;
 		_distanceToPlayer = this.Position.DistanceTo(_player.Position);
 		_events.EmitSignal(nameof(Events.OnPlatformPlaced));
 	}
 
-	private void RemoveBoidFromFlock()
-	{
-	}
-
 	private void NoTouch()
 	{
-		if(_weaponState == SnapableComponentState.grabbing && placingPosible)
+		if(_shipState == DragAndDropShipState.grabbing)
 		{
 			PlaceBoidToFlock();
-			_weaponState = SnapableComponentState.inFlock;
+			_shipState = DragAndDropShipState.inFlock;
 		}
 		else
 		{
 			GD.Print($"WeaponBase._Input() noTouch");
-			_weaponState = SnapableComponentState.idle;
+			_shipState = DragAndDropShipState.idle;
 		}
 	}
 
 	private void OnTouch()
 	{
-		if(_weaponState == SnapableComponentState.inFlock)
-		{
-			RemoveBoidFromFlock();
-		}
-
-		_weaponState = SnapableComponentState.grabbing;
-	}
-
-	Vector2 _velocity;
-
-	public void OnNavigationAgent2DVelocityComputed(Vector3 safeVelocity)
-	{
-		LinearVelocity = (new Vector2(safeVelocity.x, safeVelocity.y));
-	}
-
-	public void OnNavigationTimerTimeout()
-	{
-		//var targetPosition = _player.Position + new Vector2(_distanceToPlayer, 0).Rotated(_angleToPlayer);
-		var targetPosition = new Vector2(0,0);
-		SetTarget(targetPosition);
+		_shipState = DragAndDropShipState.grabbing;
 	}
 }
-
-public class OtherBoids
-{
-	public Node2D Boid { get; set; }
-	public float Angle { get; set; }
-	public float Distance { get; set; }
-}
-

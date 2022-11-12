@@ -1,5 +1,10 @@
-public partial class Planet : CellestialObject
+using Godot;
+
+public partial class PlanetTest : CellestialObject
 {
+
+    int resolution = 1000;
+    Vector2 _center;
 
     public override void _Ready()
     {

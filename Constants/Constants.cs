@@ -3,12 +3,13 @@ using System.Data;
 public partial class Constants
 {
     public const string Events = "/root/Events";
+    public const string Storage = "/root/Storage";
     public const string Universe = "/root/Universe";
     public const string MapView = "MapView";
 
     public partial class PlayerConstants
     {
-        public static string CollisionShape2D = "CollisionShape2D";
+        public static string CollisionShape3D = "CollisionShape3D";
     }
 
     public partial class MovementConstants

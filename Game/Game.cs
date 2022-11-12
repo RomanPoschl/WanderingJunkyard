@@ -12,11 +12,11 @@ public partial class Game : Node
 	UniverseMap _universeMap;
 
 	SectorGenerator _sector;
-	Marker2D _startPosition;
+	Marker3D _startPosition;
 
 	public override void _Ready()
 	{
-		_startPosition = GetNode<Marker2D>("StartPosition");
+		_startPosition = GetNode<Marker3D>("StartPosition");
 		SetNavigationRegion();
 
 		var events = GetNode<Events>(Constants.Events);
@@ -40,8 +40,12 @@ public partial class Game : Node
 	{
 		try
 		{
+			var storage = GetNode<Storage>(Constants.Storage);
+
 			var regionRId = NavigationServer2D.RegionCreate();
-			var defaultMapRid = _startPosition.GetWorld2d().NavigationMap;
+			var defaultMapRid = _startPosition.GetWorld3d().NavigationMap;
+			storage.SetDefaultMap(defaultMapRid);
+			
 			NavigationServer2D.RegionSetMap(regionRId, defaultMapRid);
 
 			var navPoly = new NavigationPolygon();
@@ -76,7 +80,7 @@ public partial class Game : Node
 	
 	public void NewGame()
 	{
-		var player = GetNode<Player>("Player");
+		var player = GetNode<Player>("PlayerBody");
 		player.Start(_startPosition.Position);
 
 		_universe.NewGame();

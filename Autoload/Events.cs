@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-//TODO Fix EVENTS when repaired in godot
 public partial class Events : Node
 {
 	[Signal]
@@ -21,4 +20,7 @@ public partial class Events : Node
 
 	[Signal]
 	public delegate void OnPlatformPlacedEventHandler();
+
+	[Signal]
+	public delegate void OnEnemyTargetedEventHandler(Node2D enemy);
 }

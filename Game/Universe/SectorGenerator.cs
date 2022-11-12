@@ -107,7 +107,7 @@ public partial class SectorGenerator : Node2D
 		var sectorType = Sector.GetSectorType(_sectorSeed);
 
 		var mainStar = _star.Instantiate<CellestialObject>();
-		mainStar.Position = new Vector2(0,0);
+		mainStar.Position = new Vector3(0,0, 0);
 		mainStar.Scale *= 10;
 		mainStar.Mass = 100000000;
 
@@ -119,8 +119,8 @@ public partial class SectorGenerator : Node2D
 			planet.Mass = 10000;
 
 			var distanceFromParent = _rng.RandfRange(100 * a, 1000);
-			planet.Position = planet.ParentObject.Position + new Vector2(0, distanceFromParent);
-			planet.CurrentVelocity = new Vector2(distanceFromParent / 200, 0);
+			planet.Position = planet.ParentObject.Position + new Vector3(0, distanceFromParent, 0);
+			planet.CurrentVelocity = new Vector3(distanceFromParent / 200, 0, 0);
 
 			var moonsNumber = _rng.RandiRange(0, 2);
 
@@ -132,8 +132,8 @@ public partial class SectorGenerator : Node2D
 				moon.Mass = 100f;
 
 				var distanceFromParent2 = _rng.RandfRange(10 * x, 100);
-				moon.Position = moon.ParentObject.Position + new Vector2(distanceFromParent2, 0);
-				moon.CurrentVelocity = new Vector2(0, distanceFromParent2 / 500);
+				moon.Position = moon.ParentObject.Position + new Vector3(distanceFromParent2, 0, 0);
+				moon.CurrentVelocity = new Vector3(0, distanceFromParent2 / 500, 0);
 
 				planet.ChildObjects.Add(moon);
 				_objects.Add(moon);

@@ -11,7 +11,7 @@ public partial class MapView : SubViewportContainer
         _viewport = GetNode<SubViewport>("SubViewport");
     }
 
-    public void RegisterCamera(PlayerCamera2D camera)
+    public void RegisterCamera(PlayerCamera3D camera)
     {
         _viewport.AddChild(camera);
     }

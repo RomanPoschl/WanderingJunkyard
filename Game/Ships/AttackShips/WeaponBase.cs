@@ -1,6 +1,6 @@
 using Godot;
 
-public abstract partial class WeaponBase : ShipBoidBase
+public abstract partial class WeaponBase : ShipBase
 {
 	public abstract BulletBase Bullet { get; }
 	public abstract float RateOfFire { get; }
@@ -9,7 +9,7 @@ public abstract partial class WeaponBase : ShipBoidBase
 	
 	public override void _Ready()
 	{
-		_bulletScene = GD.Load<PackedScene>(Bullet.ScenePath);
+		//_bulletScene = GD.Load<PackedScene>(Bullet.ScenePath);
 		
 		base._Ready();
 	}

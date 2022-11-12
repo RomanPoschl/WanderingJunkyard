@@ -1,80 +1,28 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbcb2rbkwt8gj"]
+[gd_scene load_steps=5 format=3 uid="uid://dbcb2rbkwt8gj"]
 
 [ext_resource type="Texture2D" uid="uid://bpt4fqwb0p8mk" path="res://art/src/CeresMainEngine.svg" id="1"]
 [ext_resource type="Texture2D" uid="uid://3cq6g60sr8gh" path="res://art/src/Ceres.svg" id="2"]
-[ext_resource type="Script" path="res://Game/Player/Engine.cs" id="4"]
 [ext_resource type="Script" path="res://Game/Player/Player.cs" id="5"]
-[ext_resource type="Script" path="res://Game/Player/PlayerCamera2D.cs" id="6"]
 
-[sub_resource type="CapsuleShape2D" id="2"]
-resource_local_to_scene = true
-radius = 7.0
-height = 14.0
+[sub_resource type="SphereShape3D" id="SphereShape3D_nd134"]
+radius = 2.57252
 
-[sub_resource type="Gradient" id="3"]
-offsets = PackedFloat32Array(0.519337, 0.98895)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
-
-[node name="Player" type="RigidBody2D" groups=["Player"]]
-collision_layer = 17
+[node name="PlayerBody" type="RigidBody3D"]
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
 gravity_scale = 0.0
 can_sleep = false
 script = ExtResource("5")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("2")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_nd134")
 
-[node name="Body" type="Node2D" parent="."]
-scale = Vector2(0.025, 0.025)
+[node name="Body" type="Node3D" parent="."]
 
-[node name="Ceres" type="Sprite2D" parent="Body"]
+[node name="Body" type="Sprite3D" parent="Body"]
 texture = ExtResource("2")
 
-[node name="EngineLeft" type="Sprite2D" parent="Body/Ceres"]
-position = Vector2(-96, 254)
-z_index = -1
+[node name="Engine" type="Sprite3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.79049, 0)
 texture = ExtResource("1")
-script = ExtResource("4")
-
-[node name="GPUParticles2D" type="CPUParticles2D" parent="Body/Ceres/EngineLeft"]
-position = Vector2(2, 34)
-rotation = 1.5708
-amount = 100
-randomness = 1.0
-lifetime_randomness = 0.5
-emission_shape = 1
-emission_sphere_radius = 1.0
-spread = 0.0
-gravity = Vector2(0, 0)
-color = Color(0.521569, 0.843137, 1, 1)
-color_ramp = SubResource("3")
-
-[node name="EngineRight" type="Sprite2D" parent="Body/Ceres"]
-position = Vector2(88, 258)
-z_index = -1
-texture = ExtResource("1")
-script = ExtResource("4")
-
-[node name="GPUParticles2D" type="CPUParticles2D" parent="Body/Ceres/EngineRight"]
-position = Vector2(2, 34)
-rotation = 1.5708
-amount = 100
-randomness = 1.0
-lifetime_randomness = 0.5
-emission_shape = 1
-emission_sphere_radius = 1.0
-spread = 0.0
-gravity = Vector2(0, 0)
-color = Color(0.521569, 0.843137, 1, 1)
-color_ramp = SubResource("3")
-
-[node name="PlayerCamera2D" type="Camera2D" parent="Body"]
-current = true
-script = ExtResource("6")
-
-[node name="RemoteMap" type="RemoteTransform2D" parent="Body/PlayerCamera2D"]
-
-[node name="NavigationObstacle2d" type="NavigationObstacle2D" parent="."]
-
-[connection signal="EnginesOn" from="." to="Body/Ceres/EngineLeft" method="OnPlayerEnginesOn"]
-[connection signal="EnginesOn" from="." to="Body/Ceres/EngineRight" method="OnPlayerEnginesOn"]

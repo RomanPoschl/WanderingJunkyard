@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://ds2ukf6e6rjov"]
+
+[ext_resource type="Script" path="res://Game/Universe/Sector/Planet/PlanetNoise.cs" id="1_noiyl"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cyg1y"]
+seed = 2
+fractal_octaves = 9
+
+[resource]
+script = ExtResource("1_noiyl")
+NoiseMap = SubResource("FastNoiseLite_cyg1y")
+Amplitude = 0.505
+MinHeight = 0.443

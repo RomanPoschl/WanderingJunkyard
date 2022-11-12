@@ -55,28 +55,26 @@ public partial class JoystickButton : TouchScreenButton
 		{
 			var posNorm = pos.Normalized();
 			GD.Print($"Position normal: {posNorm}");
-			if(pos.x > 0)
-			{
+			if(pos.x < 0)
 				Input.ActionPress(Constants.MovementConstants.MoveRight, posNorm.x);
-			}
 			else
 				Input.ActionPress(Constants.MovementConstants.MoveRight, 0);
 
 
-			if(pos.x < 0)
+			if(pos.x > 0)
 				Input.ActionPress(Constants.MovementConstants.MoveLeft, posNorm.x * -1);
 			else
 				Input.ActionPress(Constants.MovementConstants.MoveLeft, 0);
 
 
 			if(pos.y > 0)
-				Input.ActionPress(Constants.MovementConstants.MoveDown, posNorm.y);
+				Input.ActionPress(Constants.MovementConstants.MoveDown, posNorm.y * -1);
 			else
 				Input.ActionPress(Constants.MovementConstants.MoveDown, 0);
 
 
 			if(pos.y < 0)
-				Input.ActionPress(Constants.MovementConstants.MoveUp, posNorm.y * -1);
+				Input.ActionPress(Constants.MovementConstants.MoveUp, posNorm.y);
 			else
 				Input.ActionPress(Constants.MovementConstants.MoveUp, 0);
 		}

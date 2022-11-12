@@ -44,10 +44,10 @@ public partial class BuildMenu : PopupPanel
 		var platformPreLoad = ResourceLoader.Load<PackedScene>(path);
 
 		//Platform for button
-		var platform = platformPreLoad.Instantiate<ShipBoidBase>();
-		platform.WeaponState = ShipBoidBase.SnapableComponentState.idle;
-		platform.Position = new Vector2(34, 34);
-		platform.GetNode<Node2D>("Node2D").Scale = new Vector2(0.2f, 0.2f); // Scale down for display in build menu
+		var platform = platformPreLoad.Instantiate<ShipBase>();
+		platform.ShipState = ShipBase.DragAndDropShipState.idle;
+		platform.Position = new Vector3(34, 34, 0);
+		platform.GetNode<Node3D>("Node3D").Scale = new Vector3(0.2f, 0.2f, 1f); // Scale down for display in build menu
 
 		//Button
 		var btn = ResourceLoader.Load<PackedScene>("res://Game/Button.tscn").Instantiate<Button>();
@@ -73,10 +73,10 @@ public partial class BuildMenu : PopupPanel
 		GD.Print($"PRESSED {platform.ResourceName}");
 
 		var node = GetNode<Node>("/root/Game");
-		var player = node.GetNode<Node2D>("Player");
-		var platformInstance = platform.Instantiate<ShipBoidBase>();
-		platformInstance.WeaponState = ShipBoidBase.SnapableComponentState.grabbing;
-		platformInstance.GlobalPosition = player.GetGlobalMousePosition();
+		var player = node.GetNode<Node3D>("Player");
+		var platformInstance = platform.Instantiate<ShipBase>();
+		platformInstance.ShipState = ShipBase.DragAndDropShipState.grabbing;
+		platformInstance.GlobalPosition = new Vector3(btn.Position.x, btn.Position.y, 0);
 		
 		node.AddChild(platformInstance);
 
